@@ -224,6 +224,18 @@ class AOP_Case_Updates extends Basic
 
         return array();
     }
+    /**
+     * @return array
+     */
+    public function getInformationForUser()
+    {
+        $user = $this->getUser();
+        if ($user) {
+            return array("lang" => $user->language_c, "emails" => array( $user->emailAddress->getPrimaryAddress($user)));
+        }
+
+        return array();
+    }
 
     /**
      * @param EmailTemplate $template
@@ -246,8 +258,11 @@ class AOP_Case_Updates extends Basic
         $body = aop_parse_template(str_replace('$sugarurl', $sugar_config['site_url'], $template->body_html), $beans);
         $bodyAlt = aop_parse_template(str_replace('$sugarurl', $sugar_config['site_url'], $template->body), $beans);
         if ($addDelimiter) {
-            $body = $app_strings['LBL_AOP_EMAIL_REPLY_DELIMITER'].$body;
-            $bodyAlt = $app_strings['LBL_AOP_EMAIL_REPLY_DELIMITER'].$bodyAlt;
+            if ( $template->txtDelimiter === "" ){
+                $template->txtDelimiter = $app_strings['LBL_AOP_EMAIL_REPLY_DELIMITER'];
+            }
+            $body = $template->txtDelimiter.$body;
+            $bodyAlt = $template->txtDelimiter.$bodyAlt;
         }
         $ret['body'] = from_html($body);
         $ret['body_alt'] = strip_tags(from_html($bodyAlt));
@@ -290,7 +305,7 @@ class AOP_Case_Updates extends Basic
         if ($signature && array_key_exists('signature', $signature)) {
             $signaturePlain = $signature['signature'];
         }
-        $emailSettings = getPortalEmailSettings();
+        $emailSettings = getPortalEmailSettings( $template->lang );
         $text = $this->populateTemplate($template, $addDelimiter, $contactId);
         $mailer->Subject = $text['subject'];
         $mailer->Body = $text['body'] . $signatureHTML;

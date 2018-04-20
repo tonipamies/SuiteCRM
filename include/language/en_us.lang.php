@@ -210,6 +210,16 @@ $app_list_strings = array(
         'Campaign' => 'Campaign',
         'Other' => 'Other',
     ),
+    'language_dom' => array(
+        'en' => 'English',
+        'ca' => 'Catalan',
+        'fr' => 'French',
+        'de' => 'German',
+        'it' => 'Italian',
+        'pt' => 'Portuguese',
+        'es' => 'Spanish',
+        'other' => 'Other',
+    ),
     'opportunity_type_dom' => array(
         '' => '',
         'Existing Business' => 'Existing Business',

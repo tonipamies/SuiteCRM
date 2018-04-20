@@ -3440,9 +3440,14 @@ class InboundEmail extends SugarBean
             $c = new aCase();
             $c->description = $email->description;
             $c->assigned_user_id = $userId;
-            $c->name = $email->name;
-            $c->status = 'New';
-            $c->priority = 'P1';
+            $c->name = $email->name; 
+            $c->type = isset( $storedOptions['default_new_case_type'] ) ? $storedOptions['default_new_case_type'] : "User";
+            $c->status = isset( $storedOptions['default_new_case_status'] ) ? $storedOptions['default_new_case_status'] : "New";
+            $c->priority = isset( $storedOptions['default_new_case_priority'] ) ? $storedOptions['default_new_case_priority'] : "P1";
+
+            if(!empty($this->stored_options)) {
+                $storedOptions = unserialize(base64_decode($this->stored_options));
+            }
 
             if (!empty($email->reply_to_email)) {
                 $contactAddr = $email->reply_to_email;
@@ -3461,36 +3466,62 @@ class InboundEmail extends SugarBean
 				} // if
 			} // if
 			$c->save(true);
-            $c->retrieve($c->id);;
+                        $c->retrieve($c->id);;
 			if($c->load_relationship('emails')) {
 				$c->emails->add($email->id);
 			} // if
 			if($contactIds = $this->getRelatedId($contactAddr, 'contacts')) {
-				if(!empty($contactIds) && $c->load_relationship('contacts')) {
-                    if (!$accountIds && count($contactIds) == 1) {
-                        $contact = BeanFactory::getBean('Contacts', $contactIds[0]);
-                        if ($contact->load_relationship('accounts')) {
-                            $acct = $contact->accounts->get();
-                            if ($c->load_relationship('accounts') && !empty($acct[0])) {
-                                $c->accounts->add($acct[0]);
+			   if(!empty($contactIds) && $c->load_relationship('contacts')) {
+                              if (!$accountIds && count($contactIds) == 1) {
+                                 $contact = BeanFactory::getBean('Contacts', $contactIds[0]);
+                                 if ($contact->load_relationship('accounts')) {
+                                    $acct = $contact->accounts->get();
+                                    if ($c->load_relationship('accounts') && !empty($acct[0])) {
+                                       $c->accounts->add($acct[0]);
+                                    }
+                                 }
+                              }
+			      $c->contacts->add($contactIds);
+			   } // if
+			} else {
+                            if ( isset( $storedOptions['createContactFromMail'] ) && $storedOptions['createContactFromMail'] == 1 ){
+                               $GLOBALS['log']->debug('InboundEmail::handleCreateCase Create new Contact with Email::' . $contactAddr );
+                               $contact = new Contact();
+                               $contact->email1 = $contactAddr;
+                               $contact->language_c = isset( $storedOptions['default_contact_language'] ) ? $storedOptions['default_contact_language'] : "";
+                               $contact->lead_source = isset( $storedOptions['default_contact_source'] ) ? $storedOptions['default_contact_source'] : "";
+                               if ( isset( $storedOptions['fill_contact_name'] ) && $storedOptions['fill_contact_name'] == 1 ){
+                                  $first_name = "";
+                                  $last_name = "";
+                                  if ( $contactName != "" ){
+                                     $match = explode( " ", $contactName );
+                                     $w = sizeof( $match );
+                                     if ( $w > 1 ){
+                                        $first_name = $match[0];
+                                        $w--;
+                                        for ( $i=1; $i<$w; $i++ ) {
+                                            $last_name .= $match[$i] . " ";
+                                        }
+                                        $last_name = trim( $last_name );
+                                     }
+                                     $contact->first_name = $first_name;
+                                     $contact->last_name = $last_name;
+                                  }
+                               }
+                               $contact->save( false );
+                               $contactIds[0] = $contact->id;
+			       $c->contacts->add($contactIds);
                             }
                         }
-                    }
-					$c->contacts->add($contactIds);
-				} // if
-			} // if
 			$c->email_id = $email->id;
 			$email->parent_type = "Cases";
-            $email->parent_id = $c->id;
+                        $email->parent_id = $c->id;
 			// assign the email to the case owner
 			$email->assigned_user_id = $c->assigned_user_id;
 			$email->name = str_replace('%1', $c->case_number, $c->getEmailSubjectMacro()) . " ". $email->name;
 			$email->save();
 			$GLOBALS['log']->debug('InboundEmail created one case with number: '.$c->case_number);
 			$createCaseTemplateId = $this->get_stored_options('create_case_email_template', "");
-			if(!empty($this->stored_options)) {
-				$storedOptions = unserialize(base64_decode($this->stored_options));
-			}
 			if(!empty($createCaseTemplateId)) {
 				$fromName = "";
 				$fromAddress = "";
