@@ -34,6 +34,7 @@ branches:
   only:
     - master
     - develop
+    - sla_contracts
     - /hotfix.*/
     - /feature.*/
     - /fix.*/
