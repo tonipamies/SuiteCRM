@@ -3633,3 +3633,6 @@ $app_strings['LBL_INVALID_JSON_API_RESPONSE_EXCEPTION_DETAIL'] = 'Unable to vali
 $app_strings['LBL_MODULE_NOT_FOUND_EXCEPTION_DETAIL'] = 'Json API cannot find resource';
 $app_strings['LBL_NOT_ACCEPTABLE_EXCEPTION_DETAIL'] = 'Json API expects the "Accept" header to be application/vnd.api+json';
 $app_strings['LBL_UNSUPPORTED_MEDIA_TYPE_EXCEPTION_DETAIL'] = 'Json API expects the "Content-Type" header to be application/vnd.api+json';
+
+$app_list_strings['moduleList']['APO_SLACalendars'] = 'SLA Calendars';
+$app_strings['LBL_TABGROUP_SLACONTRACTS'] = 'SLA Contracts';

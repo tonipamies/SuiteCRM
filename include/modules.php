@@ -80,6 +80,9 @@ $moduleList[] = 'AOBH_BusinessHours';
 
 $moduleList[] = 'Spots';
 
+$moduleList[] = 'APO_SLACalendars';
+
+
 // this list defines all of the module names and bean names in the app
 // to create a new module's bean class, add the bean definition here
 $beanList = array();
@@ -147,6 +150,9 @@ $beanList['Employees'] = 'Employee';
 
 $beanList['Spots'] = 'Spots';
 $beanList['AOBH_BusinessHours'] = 'AOBH_BusinessHours';
+
+// SLA Contracts
+$beanList['APO_SLACalendars'] = 'APO_SLACalendars';
 
 // this list defines all of the files that contain the SugarBean class definitions from $beanList
 // to create a new module's bean class, add the file definition here
@@ -217,6 +223,8 @@ $beanFiles['Configurator'] = 'modules/Configurator/Configurator.php';
 $beanFiles['Spots'] = 'modules/Spots/Spots.php';
 $beanFiles['AOBH_BusinessHours'] = 'modules/AOBH_BusinessHours/AOBH_BusinessHours.php';
 
+// SLA Contracts
+$beanFiles['APO_SLACalendars'] = 'modules/APO_SLACalendars/APO_SLACalendars.php';
 
 // added these lists for security settings for tabs
 $modInvisList = array(

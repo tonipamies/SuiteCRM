@@ -98,6 +98,13 @@ $GLOBALS['tabStructure'] = array(
             "Project",
         )
     ),
+    "LBL_TABGROUP_SLACONTRACTS"=>array(
+        'label' => 'LBL_TABGROUP_SLACONTRACTS',
+        'modules' => array(
+            "Home",
+            "APO_SLACalendars",
+        )
+    ),
 );
 
 if(file_exists('custom/include/tabConfig.php')){
