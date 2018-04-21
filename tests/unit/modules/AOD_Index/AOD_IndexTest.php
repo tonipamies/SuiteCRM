@@ -161,6 +161,7 @@ class AOD_IndexTest extends PHPUnit_Framework_TestCase
             'AOS_Contracts' => 'AOS_Contracts',
             'AOS_Product_Categories' => 'AOS_Product_Categories',
             'AOW_WorkFlow' => 'AOW_WorkFlow',
+            'APO_SLACalendars' => 'APO_SLACalendars',
             'Accounts' => 'Account',
             'Bugs' => 'Bug',
             'Calls' => 'Call',
