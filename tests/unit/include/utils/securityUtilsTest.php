@@ -53,7 +53,8 @@ class security_utilsTest extends PHPUnit_Framework_TestCase
                 'AOK_KnowledgeBase' => 'AOK_KnowledgeBase',
                 'AOK_Knowledge_Base_Categories' => 'AOK_Knowledge_Base_Categories',
                 'EmailTemplates' => 'EmailTemplates',
-                'Surveys' => 'Surveys'
+                'Surveys' => 'Surveys',
+                'APO_SLACalendars' => 'APO_SLACalendars'
 
         );
 
