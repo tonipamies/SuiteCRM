@@ -300,6 +300,7 @@ class SecurityGroupTest extends PHPUnit_Framework_TestCase
             'SurveyQuestions' => 'SurveyQuestions',
             'SurveyResponses' => 'SurveyResponses',
             'Surveys' => 'Surveys',
+            'APO_SLACalendars' => 'APO_SLACalendars',
         );
 
         $actual = $securityGroup->getSecurityModules();
