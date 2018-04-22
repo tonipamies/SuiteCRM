@@ -1,8 +1,8 @@
 <?php
-$module_name = 'APO_SLAWeeklyCalendar';
+$module_name = 'APO_SLAWeeklyCalendars';
 $viewdefs [$module_name] = 
 array (
-  'QuickCreate' => 
+  'EditView' => 
   array (
     'templateMeta' => 
     array (
@@ -46,12 +46,7 @@ array (
         ),
         1 => 
         array (
-          0 => 
-          array (
-            'name' => 'description',
-            'comment' => 'Full text of the note',
-            'label' => 'LBL_DESCRIPTION',
-          ),
+          0 => 'description',
           1 => 
           array (
             'name' => 'slacalendar',

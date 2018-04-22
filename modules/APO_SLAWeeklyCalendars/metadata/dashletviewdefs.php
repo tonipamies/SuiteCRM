@@ -1,5 +1,5 @@
 <?php
-$dashletData['APO_SLAWeeklyCalendarDashlet']['searchFields'] = array (
+$dashletData['APO_SLAWeeklyCalendarsDashlet']['searchFields'] = array (
   'name' => 
   array (
     'default' => '',
@@ -25,7 +25,7 @@ $dashletData['APO_SLAWeeklyCalendarDashlet']['searchFields'] = array (
     'default' => '',
   ),
 );
-$dashletData['APO_SLAWeeklyCalendarDashlet']['columns'] = array (
+$dashletData['APO_SLAWeeklyCalendarsDashlet']['columns'] = array (
   'name' => 
   array (
     'width' => '40%',

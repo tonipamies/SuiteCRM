@@ -38,45 +38,18 @@
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
+ if (!defined('sugarEntry') || !sugarEntry) {
+    die('Not A Valid Entry Point');
+}
 
-class APO_SLAWeeklyCalendar extends Basic
-{
-    public $new_schema = true;
-    public $module_dir = 'APO_SLAWeeklyCalendar';
-    public $object_name = 'APO_SLAWeeklyCalendar';
-    public $table_name = 'apo_slaweeklycalendar';
-    public $importable = true;
-
-    public $id;
-    public $name;
-    public $date_entered;
-    public $date_modified;
-    public $modified_user_id;
-    public $modified_by_name;
-    public $created_by;
-    public $created_by_name;
-    public $description;
-    public $deleted;
-    public $created_by_link;
-    public $modified_user_link;
-    public $assigned_user_id;
-    public $assigned_user_name;
-    public $assigned_user_link;
-    public $SecurityGroups;
-    public $dayoftheweek;
-    public $apo_slacalendars_id_c;
-    public $slacalendar;
-    public $daytimeslots;
-	
-    public function bean_implements($interface)
-    {
-        switch($interface)
-        {
-            case 'ACL':
-                return true;
-        }
-
-        return false;
-    }
-	
+global $mod_strings, $app_strings, $sugar_config;
+ 
+if(ACLController::checkAccess('APO_SLAWeeklyCalendars', 'edit', true)){
+    $module_menu[]=array('index.php?module=APO_SLAWeeklyCalendars&action=EditView&return_module=APO_SLAWeeklyCalendars&return_action=DetailView', $mod_strings['LNK_NEW_RECORD'], 'Add', 'APO_SLAWeeklyCalendars');
+}
+if(ACLController::checkAccess('APO_SLAWeeklyCalendars', 'list', true)){
+    $module_menu[]=array('index.php?module=APO_SLAWeeklyCalendars&action=index&return_module=APO_SLAWeeklyCalendars&return_action=DetailView', $mod_strings['LNK_LIST'],'View', 'APO_SLAWeeklyCalendars');
+}
+if(ACLController::checkAccess('APO_SLAWeeklyCalendars', 'import', true)){
+    $module_menu[]=array('index.php?module=Import&action=Step1&import_module=APO_SLAWeeklyCalendars&return_module=APO_SLAWeeklyCalendars&return_action=index', $app_strings['LBL_IMPORT'], 'Import', 'APO_SLAWeeklyCalendars');
 }

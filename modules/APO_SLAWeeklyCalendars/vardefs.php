@@ -38,8 +38,8 @@
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
-$dictionary['APO_SLAWeeklyCalendar'] = array(
-    'table' => 'apo_slaweeklycalendar',
+$dictionary['APO_SLAWeeklyCalendars'] = array(
+    'table' => 'apo_slaweeklycalendars',
     'audited' => true,
     'inline_edit' => true,
     'duplicate_merge' => true,
@@ -148,4 +148,4 @@ $dictionary['APO_SLAWeeklyCalendar'] = array(
 if (!class_exists('VardefManager')) {
         require_once('include/SugarObjects/VardefManager.php');
 }
-VardefManager::createVardef('APO_SLAWeeklyCalendar', 'APO_SLAWeeklyCalendar', array('basic','assignable','security_groups'));
+VardefManager::createVardef('APO_SLAWeeklyCalendars', 'APO_SLAWeeklyCalendars', array('basic','assignable','security_groups'));

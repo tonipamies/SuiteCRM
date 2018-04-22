@@ -16,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,32 +34,19 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-require_once('include/Dashlets/DashletGeneric.php');
-require_once('modules/APO_SLAWeeklyCalendar/APO_SLAWeeklyCalendar.php');
+global $app_strings;
 
-class APO_SLAWeeklyCalendarDashlet extends DashletGeneric {
-    function __construct($id, $def = null)
-    {
-        global $current_user, $app_strings;
-        require('modules/APO_SLAWeeklyCalendar/metadata/dashletviewdefs.php');
-
-        parent::__construct($id, $def);
-
-        if (empty($def['title'])) {
-            $this->title = translate('LBL_HOMEPAGE_TITLE', 'APO_SLAWeeklyCalendar');
-        }
-
-        $this->searchFields = $dashletData['APO_SLAWeeklyCalendarDashlet']['searchFields'];
-        $this->columns = $dashletData['APO_SLAWeeklyCalendarDashlet']['columns'];
-
-        $this->seedBean = new APO_SLAWeeklyCalendar();        
-    }
-}
+$dashletMeta['APO_SLAWeeklyCalendarsDashlet'] = array(
+    'module' => 'APO_SLAWeeklyCalendars',
+    'title' => translate('LBL_HOMEPAGE_TITLE', 'APO_SLAWeeklyCalendars'),
+    'description' => 'A customizable view into APO_SLAWeeklyCalendars',
+    'category' => 'Module Views'
+);

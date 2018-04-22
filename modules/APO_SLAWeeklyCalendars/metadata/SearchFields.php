@@ -38,18 +38,44 @@
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 
- if (!defined('sugarEntry') || !sugarEntry) {
+if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
-global $mod_strings, $app_strings, $sugar_config;
- 
-if(ACLController::checkAccess('APO_SLAWeeklyCalendar', 'edit', true)){
-    $module_menu[]=array('index.php?module=APO_SLAWeeklyCalendar&action=EditView&return_module=APO_SLAWeeklyCalendar&return_action=DetailView', $mod_strings['LNK_NEW_RECORD'], 'Add', 'APO_SLAWeeklyCalendar');
-}
-if(ACLController::checkAccess('APO_SLAWeeklyCalendar', 'list', true)){
-    $module_menu[]=array('index.php?module=APO_SLAWeeklyCalendar&action=index&return_module=APO_SLAWeeklyCalendar&return_action=DetailView', $mod_strings['LNK_LIST'],'View', 'APO_SLAWeeklyCalendar');
-}
-if(ACLController::checkAccess('APO_SLAWeeklyCalendar', 'import', true)){
-    $module_menu[]=array('index.php?module=Import&action=Step1&import_module=APO_SLAWeeklyCalendar&return_module=APO_SLAWeeklyCalendar&return_action=index', $app_strings['LBL_IMPORT'], 'Import', 'APO_SLAWeeklyCalendar');
-}
+$module_name = 'APO_SLAWeeklyCalendars';
+$searchFields[$module_name] = array(
+    'name' => array('query_type' => 'default'),
+    'current_user_only' => array(
+        'query_type' => 'default',
+        'db_field' => array('assigned_user_id'),
+        'my_items' => true,
+        'vname' => 'LBL_CURRENT_USER_FILTER',
+        'type' => 'bool'
+    ),
+    'assigned_user_id' => array('query_type' => 'default'),
+
+    //Range Search Support
+    'range_date_entered' => array('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
+    'start_range_date_entered' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true
+    ),
+    'end_range_date_entered' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true
+    ),
+    'range_date_modified' => array('query_type' => 'default', 'enable_range_search' => true, 'is_date_field' => true),
+    'start_range_date_modified' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true
+    ),
+    'end_range_date_modified' => array(
+        'query_type' => 'default',
+        'enable_range_search' => true,
+        'is_date_field' => true
+    ),
+    //Range Search Support
+);

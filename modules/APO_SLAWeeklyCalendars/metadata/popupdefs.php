@@ -1,13 +1,13 @@
 <?php
 $popupMeta = array (
-    'moduleMain' => 'APO_SLAWeeklyCalendar',
-    'varName' => 'APO_SLAWeeklyCalendar',
-    'orderBy' => 'apo_slaweeklycalendar.name',
+    'moduleMain' => 'APO_SLAWeeklyCalendars',
+    'varName' => 'APO_SLAWeeklyCalendars',
+    'orderBy' => 'apo_slaweeklycalendars.name',
     'whereClauses' => array (
-  'name' => 'apo_slaweeklycalendar.name',
-  'dayoftheweek' => 'apo_slaweeklycalendar.dayoftheweek',
-  'slacalendar' => 'apo_slaweeklycalendar.slacalendar',
-  'assigned_user_id' => 'apo_slaweeklycalendar.assigned_user_id',
+  'name' => 'apo_slaweeklycalendars.name',
+  'dayoftheweek' => 'apo_slaweeklycalendars.dayoftheweek',
+  'slacalendar' => 'apo_slaweeklycalendars.slacalendar',
+  'assigned_user_id' => 'apo_slaweeklycalendars.assigned_user_id',
 ),
     'searchInputs' => array (
   1 => 'name',

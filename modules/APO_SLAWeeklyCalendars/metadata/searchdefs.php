@@ -1,5 +1,5 @@
 <?php
-$module_name = 'APO_SLAWeeklyCalendar';
+$module_name = 'APO_SLAWeeklyCalendars';
 $searchdefs [$module_name] = 
 array (
   'layout' => 
