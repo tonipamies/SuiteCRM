@@ -54,9 +54,8 @@ class security_utilsTest extends PHPUnit_Framework_TestCase
                 'AOK_Knowledge_Base_Categories' => 'AOK_Knowledge_Base_Categories',
                 'EmailTemplates' => 'EmailTemplates',
                 'Surveys' => 'Surveys',
-                'APO_SLACalendars' => 'APO_SLACalendars'
-                'APO_SLAWeeklyCalendars' => 'APO_SLAWeeklyCalendars'
-
+                'APO_SLACalendars' => 'APO_SLACalendars',
+                'APO_SLAWeeklyCalendars' => 'APO_SLAWeeklyCalendars',
         );
 
         $actual = query_module_access_list($user);
