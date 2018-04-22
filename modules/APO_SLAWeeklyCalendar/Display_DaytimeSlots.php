@@ -63,13 +63,13 @@ if (!defined('sugarEntry') || !sugarEntry) {
    die('Not A Valid Entry Point');
 }
 
-function displayCalendar($focus)
+function displayDaytimeSlots.php($focus)
 {
     if (isset($focus->field_defs["calendar"]["height"])){
         $height = $focus->field_defs["calendar"]["height"];
     } else {
         $height = 200;
     }
-    return "<table><tr><td height=\"{$height}\">pre</td></tr></table>";
+    return "<table><tr><td height=\"{$height}\">DaytimeSlots</td></tr></table>";
 }
 ?>

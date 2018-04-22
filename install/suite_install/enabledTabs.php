@@ -38,3 +38,4 @@ $enabled_tabs[] = 'AOK_KnowledgeBase';
 $enabled_tabs[] = 'AOK_Knowledge_Base_Categories';
 $enabled_tabs[] = 'EmailTemplates';
 $enabled_tabs[] = 'APO_SLACalendars';
+$enabled_tabs[] = 'APO_SLAWeeklyCalendar';

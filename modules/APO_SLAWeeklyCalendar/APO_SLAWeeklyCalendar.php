@@ -1,5 +1,6 @@
 <?php
 /**
+ *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
@@ -15,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -36,40 +37,46 @@
  * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-/**
- * SLA Contracts
- * @package SLA Contracts for SuiteCRM
- * @copyright Antoni Pàmies
- *
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU AFFERO GENERAL PUBLIC LICENSE as published by
- * the Free Software Foundation; either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU AFFERO GENERAL PUBLIC LICENSE
- * along with this program; if not, see http://www.gnu.org/licenses
- * or write to the Free Software Foundation,Inc., 51 Franklin Street,
- * Fifth Floor, Boston, MA 02110-1301  USA
- *
- * @author Antoni Pàmies <toni@arboli.net>
- */
 
-if (!defined('sugarEntry') || !sugarEntry) {
-   die('Not A Valid Entry Point');
-}
 
-function displayCalendar($focus)
+class APO_SLAWeeklyCalendar extends Basic
 {
-    if (isset($focus->field_defs["calendar"]["height"])){
-        $height = $focus->field_defs["calendar"]["height"];
-    } else {
-        $height = 200;
+    public $new_schema = true;
+    public $module_dir = 'APO_SLAWeeklyCalendar';
+    public $object_name = 'APO_SLAWeeklyCalendar';
+    public $table_name = 'apo_slaweeklycalendar';
+    public $importable = true;
+
+    public $id;
+    public $name;
+    public $date_entered;
+    public $date_modified;
+    public $modified_user_id;
+    public $modified_by_name;
+    public $created_by;
+    public $created_by_name;
+    public $description;
+    public $deleted;
+    public $created_by_link;
+    public $modified_user_link;
+    public $assigned_user_id;
+    public $assigned_user_name;
+    public $assigned_user_link;
+    public $SecurityGroups;
+    public $dayoftheweek;
+    public $apo_slacalendars_id_c;
+    public $slacalendar;
+    public $daytimeslots;
+	
+    public function bean_implements($interface)
+    {
+        switch($interface)
+        {
+            case 'ACL':
+                return true;
+        }
+
+        return false;
     }
-    return "<table><tr><td height=\"{$height}\">pre</td></tr></table>";
+	
 }
-?>

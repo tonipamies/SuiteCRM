@@ -103,6 +103,7 @@ class file_utilsTest extends PHPUnit_Framework_TestCase
                 'AOW_Processed' => 'AOW_Processed',
                 'AOW_WorkFlow' => 'AOW_WorkFlow',
                 'APO_SLACalendars' => 'APO_SLACalendars',
+                'APO_SLAWeeklyCalendars' => 'APO_SLAWeeklyCalendars',
                 'Audit' => 'Audit',
                 'Bugs' => 'Bugs',
                 'Calendar' => 'Calendar',

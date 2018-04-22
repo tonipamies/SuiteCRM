@@ -55,6 +55,7 @@ class security_utilsTest extends PHPUnit_Framework_TestCase
                 'EmailTemplates' => 'EmailTemplates',
                 'Surveys' => 'Surveys',
                 'APO_SLACalendars' => 'APO_SLACalendars'
+                'APO_SLAWeeklyCalendars' => 'APO_SLAWeeklyCalendars'
 
         );
 

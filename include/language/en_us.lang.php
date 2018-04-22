@@ -3635,4 +3635,5 @@ $app_strings['LBL_NOT_ACCEPTABLE_EXCEPTION_DETAIL'] = 'Json API expects the "Acc
 $app_strings['LBL_UNSUPPORTED_MEDIA_TYPE_EXCEPTION_DETAIL'] = 'Json API expects the "Content-Type" header to be application/vnd.api+json';
 
 $app_list_strings['moduleList']['APO_SLACalendars'] = 'SLA Calendars';
+$app_list_strings['moduleList']['APO_SLAWeeklyCalendars'] = 'SLA Weekly Calendars';
 $app_strings['LBL_TABGROUP_SLACONTRACTS'] = 'SLA Contracts';

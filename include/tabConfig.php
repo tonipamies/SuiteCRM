@@ -103,6 +103,7 @@ $GLOBALS['tabStructure'] = array(
         'modules' => array(
             "Home",
             "APO_SLACalendars",
+            "APO_SLAWeeklyCalendars",
         )
     ),
 );
