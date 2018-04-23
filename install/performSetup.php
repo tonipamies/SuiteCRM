@@ -472,7 +472,7 @@ FP;
     $enabled_tabs[] = 'EmailTemplates';
     $enabled_tabs[] = 'Surveys';
     $enabled_tabs[] = 'APO_SLACalendars';
-    $enabled_tabs[] = 'APO_SLAWeeklyCalendar';
+    $enabled_tabs[] = 'APO_SLAWeeklyCalendars';
 
 //Beginning of the scenario implementations
 //We need to load the tabs so that we can remove those which are scenario based and un-selected
