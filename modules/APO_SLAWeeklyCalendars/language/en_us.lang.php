@@ -80,5 +80,7 @@ $mod_strings = array (
   'LBL_SLACALENDAR_APO_SLACALENDARS_ID' => 'SLA Calendar (related  ID)',
   'LBL_SLACALENDAR' => 'SLA Calendar',
   'LBL_DAYTIMESLOTS' => 'Daytime slots',
-  'LBL_DETAILVIEW_PANEL1' => 'New Panel 1',
+  'LBL_DETAILVIEW_PANEL1' => 'System',
+  'LBL_DOTW_ALREADY_CREATED' => 'already created for',
+  'ERR_IMPOSSIBLE_TO_CHECK' => 'Impossible to verify the duplicity of data. Please try again. If the problem persists, notify to your Administrator',
 );

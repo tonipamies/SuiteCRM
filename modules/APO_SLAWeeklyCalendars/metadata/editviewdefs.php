@@ -1,4 +1,6 @@
 <?php
+global $app_strings;
+
 $module_name = 'APO_SLAWeeklyCalendars';
 $viewdefs [$module_name] = 
 array (
@@ -7,6 +9,19 @@ array (
     'templateMeta' => 
     array (
       'maxColumns' => '2',
+      'form' =>
+      array (
+        'buttons' =>
+        array (
+          0 => 
+          array (
+            'customCode' => '<input title="'.$app_strings['LBL_SAVE_BUTTON_TITLE'].' [Alt+'.$app_strings['LBL_SAVE_BUTTON_KEY'].']" 
+                                    accessKey="'.$app_strings['LBL_SAVE_BUTTON_KEY'].'" class="button primary" type="submit" name="save" 
+                                    onclick="var _form = document.getElementById(\'EditView\'); _form.action.value=\'Save\'; if(check_formWeeklyCalendar(\'EditView\'))SUGAR.ajaxUI.submitForm(_form);return false;" value="'.$app_strings['LBL_SAVE_BUTTON_LABEL'].'">',
+          ),
+         'CANCEL',
+        ),
+      ),
       'widths' => 
       array (
         0 => 
@@ -58,5 +73,4 @@ array (
     ),
   ),
 );
-;
 ?>

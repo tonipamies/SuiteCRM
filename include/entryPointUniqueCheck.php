@@ -4,7 +4,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2017 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2016 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -15,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -63,13 +63,30 @@ if (!defined('sugarEntry') || !sugarEntry) {
    die('Not A Valid Entry Point');
 }
 
-function displayDaytimeSlots($focus)
-{
-    if (isset($focus->field_defs["daytimeslots"]["height"])){
-        $height = $focus->field_defs["daytimeslots"]["height"];
-    } else {
-        $height = 200;
-    }
-    return "<table><tr><td height=\"{$height}\">DaytimeSlots</td></tr></table>";
+$module = $_POST["module"];
+
+switch($module){
+    case 'APO_SLAWeeklyCalendars':
+        $dayoftheweek = $_POST["dayoftheweek"];
+        $idCalendar = $_POST["id_slacalendar"];
+        $record = $_POST["record"];
+        if ($dayoftheweek=="" || $idCalendar == "" )
+        {
+            echo "missing field";
+            return;
+        }
+        $bean = new APO_SLAWeeklyCalendars();
+        $bean->retrieve_by_string_fields(array('dayoftheweek' => $dayoftheweek, 'apo_slacalendars_id_c' => $idCalendar ));
+        if (!isset($bean->id) || ($record == $bean->id))
+        {
+            echo "ok";
+            return;
+        }
+        echo "notunique";
+        return;
+    default:
+       echo "error";
+       return;
 }
+echo "notunique";
 ?>
