@@ -37,7 +37,8 @@
  * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
-global $app_strings, $mod_strings;
+global $app_strings;
+
 
 $dictionary['APO_SLAWeeklyCalendars'] = array(
     'table' => 'apo_slaweeklycalendars',
@@ -72,7 +73,7 @@ $dictionary['APO_SLAWeeklyCalendars'] = array(
           'validation' => 
           array (
              'type' => 'callback',
-             'callback' => 'function(formname,nameIndex){if($("#" + nameIndex).val()=="0"){add_error_style(formname,nameIndex,"'.$app_strings['ERR_MISSING_REQUIRED_FIELDS']." ".$mod_strings['LBL_DAYOFTHEWEEK'].'"); return false;}; return true;}',
+             'callback' => 'function(formname,nameIndex){if($("#" + nameIndex).val()=="0"){add_error_style(formname,nameIndex,"'.$app_strings['ERR_MISSING_REQUIRED_FIELDS'].' "+SUGAR.language.get("APO_SLAWeeklyCalendars","LBL_DAYOFTHEWEEK")); return false;}; return true;}',
           ),
        ),
        'apo_slacalendars_id_c' => 

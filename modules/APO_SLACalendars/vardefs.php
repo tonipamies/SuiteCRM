@@ -40,65 +40,88 @@
 
 global $sugar_config;
 
-$dictionary['APO_SLACalendars'] = array(
-    'table' => 'apo_slacalendars',
-    'audited' => true,
-    'inline_edit' => true,
-    'duplicate_merge' => true,
-    'fields' => array (
-  'description' => 
-  array (
-    'name' => 'description',
-    'vname' => 'LBL_DESCRIPTION',
-    'type' => 'text',
-    'comment' => 'Full text of the note',
-    'rows' => '6',
-    'cols' => '80',
-    'required' => false,
-    'massupdate' => 0,
-    'no_default' => false,
-    'comments' => 'Full text of the note',
-    'help' => 'Please enter a brief description of this SLA calendar',
-    'importable' => 'true',
-    'duplicate_merge' => 'disabled',
-    'duplicate_merge_dom_value' => '0',
-    'audited' => false,
-    'inline_edit' => true,
-    'reportable' => true,
-    'unified_search' => false,
-    'merge_filter' => 'disabled',
-    'size' => '20',
-    'studio' => 'visible',
-  ),
-  'calendar' => array(
-    'required' => false,
-    'name' => 'calendar',
-    'vname' => 'LBL_CALENDAR',
-    'type' => 'function',
-    'source' => 'non-db',
-    'massupdate' => 0,
-    'studio' => 'visible',
-    'importable' => 'false',
-    'duplicate_merge' => 'disabled',
-    'duplicate_merge_dom_value' => 0,
-    'audited' => false,
-    'inline_edit' => false,
-    'reportable' => false,
-    'link_target' => '520',
-    'height' => '520',
-    'function' => array(
-        'name' => 'displayCalendar',
-        'returns' => 'html',
-        'include' => 'modules/APO_SLACalendars/Display_Calendar.php',
-    ),
-  ),
-),
-    'relationships' => array (
-),
-    'optimistic_locking' => true,
-    'unified_search' => true,
-);
+$dictionary['APO_SLACalendars'] = 
+    array(
+        'table' => 'apo_slacalendars',
+        'audited' => true,
+        'inline_edit' => true,
+        'duplicate_merge' => true,
+        'fields' => 
+            array (
+                'description' => 
+                    array(
+                        'name' => 'description',
+                        'vname' => 'LBL_DESCRIPTION',
+                        'type' => 'text',
+                        'comment' => 'Full text of the note',
+                        'rows' => '6',
+                        'cols' => '80',
+                        'required' => false,
+                        'massupdate' => 0,
+                        'no_default' => false,
+                        'comments' => 'Full text of the note',
+                        'help' => 'Please enter a brief description of this SLA calendar',
+                        'importable' => 'true',
+                        'duplicate_merge' => 'disabled',
+                        'duplicate_merge_dom_value' => '0',
+                        'audited' => false,
+                        'inline_edit' => true,
+                        'reportable' => true,
+                        'unified_search' => false,
+                        'merge_filter' => 'disabled',
+                        'size' => '20',
+                        'studio' => 'visible',
+                    ),
+                'calendar' => 
+                    array(
+                        'required' => false,
+                        'name' => 'calendar',
+                        'vname' => 'LBL_CALENDAR',
+                        'type' => 'function',
+                        'source' => 'non-db',
+                        'massupdate' => 0,
+                        'studio' => 'visible',
+                        'importable' => 'false',
+                        'duplicate_merge' => 'disabled',
+                        'duplicate_merge_dom_value' => 0,
+                        'audited' => false,
+                        'inline_edit' => false,
+                        'reportable' => false,
+                        'link_target' => '520',
+                        'height' => '520',
+                        'function' => 
+                            array(
+                                'name' => 'displayCalendar',
+                                'returns' => 'html',
+                                'include' => 'modules/APO_SLACalendars/Display_Calendar.php',
+                            ),
+                    ),
+                'apo_slaweeklycalendars' => 
+                    array(
+                        'name' => 'apo_slaweeklycalendars',
+                        'type' => 'link',
+                        'relationship' => 'apo_slacalendars_apo_slaweeklycalendars',
+                        'source' => 'non-db',
+                    ),
+            ),
+        'relationships' => 
+            array(
+                'apo_slacalendars_apo_slaweeklycalendars' =>
+                    array(
+                        'lhs_module' => 'APO_SLACalendars',
+                        'lhs_table' => 'apo_slacalendars',
+                        'lhs_key' => 'id',
+                        'rhs_module' => 'APO_SLAWeeklyCalendars',
+                        'rhs_table' => 'apo_slaweeklycalendars',
+                        'rhs_key' => 'apo_slacalendars_id_c',
+                        'relationship_type' => 'one-to-many',
+                    ),
+            ),
+        'optimistic_locking' => true,
+        'unified_search' => true,
+    );
+
 if (!class_exists('VardefManager')) {
-        require_once('include/SugarObjects/VardefManager.php');
+    require_once('include/SugarObjects/VardefManager.php');
 }
 VardefManager::createVardef('APO_SLACalendars', 'APO_SLACalendars', array('basic','assignable','security_groups'));

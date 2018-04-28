@@ -1,22 +1,12 @@
 <?php
-global $app_strings;
-
 $module_name = 'APO_SLAWeeklyCalendars';
 $viewdefs [$module_name] = 
 array (
-  'EditView' => 
+  'QuickCreate' => 
   array (
     'templateMeta' => 
     array (
       'maxColumns' => '2',
-      'form' =>
-      array (
-        'buttons' =>
-        array (
-         'SAVEJSVAL',
-         'CANCEL',
-        ),
-      ),
       'widths' => 
       array (
         0 => 
@@ -56,7 +46,12 @@ array (
         ),
         1 => 
         array (
-          0 => 'description',
+          0 => 
+          array (
+            'name' => 'description',
+            'comment' => 'Full text of the note',
+            'label' => 'LBL_DESCRIPTION',
+          ),
           1 => 
           array (
             'name' => 'slacalendar',
@@ -68,4 +63,5 @@ array (
     ),
   ),
 );
+;
 ?>

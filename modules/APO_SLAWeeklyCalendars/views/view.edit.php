@@ -38,7 +38,12 @@
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  ********************************************************************************/
 
+if(!defined('sugarEntry') || !sugarEntry){
+   die('Not A Valid Entry Point');
+}
+
 require_once('include/MVC/View/views/view.edit.php');
+require_once('modules/APO_SLAWeeklyCalendars/util.php');
 
 class APO_SLAWeeklyCalendarsViewEdit extends ViewEdit 
 {
@@ -67,49 +72,7 @@ class APO_SLAWeeklyCalendarsViewEdit extends ViewEdit
     {
         global $mod_strings;
         parent::preDisplay();
-        $out = "
-          <script>
-            function check_formWeeklyCalendar(form_name) {
-              var dayoftheweek = $('#dayoftheweek').val();
-              var record = $('input[name=record]').val();
-              var sel=document.getElementById('dayoftheweek');
-              var day=sel.options[dayoftheweek].innerHTML;
-              var slacalendar = $('#slacalendar').val();
-              var retform = check_form(form_name);
-              if (!retform) return false;
-              var id_slacalendar = $('#apo_slacalendars_id_c').val();
-              var ret = false;
-              $.ajax({async: false,
-                      url: 'index.php?entryPoint=uniqueCheck',
-                      type: 'POST',
-                      data: {module: '{$this->module}',dayoftheweek: dayoftheweek, id_slacalendar:id_slacalendar, record:record},
-                      timeout: 1000,
-                      error: function(xhr,status,error){ 
-                               add_error_style(form_name,'dayoftheweek','{$mod_strings['LBL_DAYOFTHEWEEK']}: {$mod_strings['ERR_IMPOSSIBLE_TO_CHECK']} Error: ' + error.message);
-                               add_error_style(form_name,'slacalendar','{$mod_strings['LBL_SLACALENDAR']}: {$mod_strings['ERR_IMPOSSIBLE_TO_CHECK']} Error: ' + error.message);
-                               ret = false; 
-                             },
-                      success: function(data,status){
-                                 switch(data){
-                                   case 'notunique':
-                                     add_error_style(form_name,'dayoftheweek','{$mod_strings['LBL_DAYOFTHEWEEK']}: <b><i>'+day+'</i></b> {$mod_strings['LBL_DOTW_ALREADY_CREATED']} <b><i>'+slacalendar+ '</i></b> {$mod_strings['LBL_MODULE_TITLE']}');
-                                     add_error_style(form_name,'slacalendar','{$mod_strings['LBL_SLACALENDAR']}: <b><i>'+day+'</i></b> {$mod_strings['LBL_DOTW_ALREADY_CREATED']} <b><i>'+slacalendar+ '</i></b> {$mod_strings['LBL_MODULE_TITLE']}'); 
-                                     ret = false;
-                                     return false;
-                                   case 'ok':
-                                     ret = true;
-                                     return true;
-                                   default:
-                                     add_error_style(form_name,'dayoftheweek','{$mod_strings['LBL_DAYOFTHEWEEK']}: {$mod_strings['ERR_IMPOSSIBLE_TO_CHECK']}');
-                                     add_error_style(form_name,'slacalendar','{$mod_strings['LBL_SLACALENDAR']}: {$mod_strings['ERR_IMPOSSIBLE_TO_CHECK']}');
-                                     ret = false;
-                                     return false; 
-                                 }
-                             }
-                     });
-              return ret;
-            }
-          </script>";
+        $out = getAPO_SLAWeeklyCalendarsJSVal();
         echo $out;
     }
 

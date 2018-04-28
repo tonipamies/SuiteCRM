@@ -1,11 +1,11 @@
 <?php
-/**
- *
+
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2017 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -36,47 +36,43 @@
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
  * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ ********************************************************************************/
 
+if(!defined('sugarEntry') || !sugarEntry){
+   die('Not A Valid Entry Point');
+}
 
-$mod_strings = array (
-  'LBL_ASSIGNED_TO_ID' => 'Assigned User Id',
-  'LBL_ASSIGNED_TO_NAME' => 'Assigned to',
-  'LBL_SECURITYGROUPS' => 'Security Groups',
-  'LBL_SECURITYGROUPS_SUBPANEL_TITLE' => 'Security Groups',
-  'LBL_ID' => 'ID',
-  'LBL_DATE_ENTERED' => 'Date Created',
-  'LBL_DATE_MODIFIED' => 'Date Modified',
-  'LBL_MODIFIED' => 'Modified By',
-  'LBL_MODIFIED_NAME' => 'Modified By Name',
-  'LBL_CREATED' => 'Created By',
-  'LBL_DESCRIPTION' => 'Description',
-  'LBL_DELETED' => 'Deleted',
-  'LBL_NAME' => 'Name',
-  'LBL_CREATED_USER' => 'Created by User',
-  'LBL_MODIFIED_USER' => 'Modified by User',
-  'LBL_LIST_NAME' => 'Name',
-  'LBL_EDIT_BUTTON' => 'Edit',
-  'LBL_REMOVE' => 'Remove',
-  'LBL_ASCENDING' => 'Ascending',
-  'LBL_DESCENDING' => 'Descending',
-  'LBL_OPT_IN' => 'Opt In',
-  'LBL_OPT_IN_PENDING_EMAIL_NOT_SENT' => 'Pending Confirm opt in, Confirm opt in not sent',
-  'LBL_OPT_IN_PENDING_EMAIL_SENT' => 'Pending Confirm opt in, Confirm opt in sent',
-  'LBL_OPT_IN_CONFIRMED' => 'Opted in',
-  'LBL_LIST_FORM_TITLE' => 'SLA Calendars List',
-  'LBL_MODULE_NAME' => 'SLA Calendars',
-  'LBL_MODULE_TITLE' => 'SLA Calendars',
-  'LBL_HOMEPAGE_TITLE' => 'My SLA Calendars',
-  'LNK_NEW_RECORD' => 'Create SLA Calendars',
-  'LNK_LIST' => 'View SLA Calendars',
-  'LNK_IMPORT_APO_SLACALENDARS' => 'Import SLA Calendars',
-  'LBL_SEARCH_FORM_TITLE' => 'Search SLA Calendars',
-  'LBL_HISTORY_SUBPANEL_TITLE' => 'View History',
-  'LBL_ACTIVITIES_SUBPANEL_TITLE' => 'Activities',
-  'LBL_APO_SLACALENDARS_SUBPANEL_TITLE' => 'SLA Calendars',
-  'LBL_NEW_FORM_TITLE' => 'New SLA Calendars',
-  'LBL_CALENDAR' => 'Calendar',
-  'LBL_DETAILVIEW_PANEL1' => 'System',
-  'LBL_SUBPANEL_SLAWEEKLYCALENDARS' => 'Working hours per day of the week',
-);
+require_once("include/EditView/SubpanelQuickCreate.php");
+require_once('modules/APO_SLAWeeklyCalendars/util.php');
+
+class APO_SLAWeeklyCalendarsSubpanelQuickCreate extends SubpanelQuickCreate 
+{
+
+    function __construct($module, $view='QuickCreate', $proccessOverride = false)
+    {
+        $this->defaultProcess=false;
+        $this->module = $module;
+        parent::__construct($module, $view, $proccessOverride);
+        $this->ev->defs['templateMeta']['form']['buttons'] = array('SUBPANELSAVEJSVAL','SUBPANELCANCEL', 'SUBPANELFULLFORM');
+        $out = getAPO_SLAWeeklyCalendarsJSVal();
+        echo $out;
+        $this->process($module); 
+    }
+
+    /**
+     * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
+     */
+    function APO_SLAWeeklyCalendarsSubpanelQuickCreate()
+    {
+        $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
+        if(isset($GLOBALS['log'])) {
+            $GLOBALS['log']->deprecated($deprecatedMessage);
+        }
+        else {
+            trigger_error($deprecatedMessage, E_USER_DEPRECATED);
+        }
+        self::__construct();
+    }
+
+}
+
