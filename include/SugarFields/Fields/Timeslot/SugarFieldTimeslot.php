@@ -61,16 +61,13 @@ class SugarFieldTimeslot extends SugarFieldBase {
                 $mins = $mins / 60;
                 $value = str_pad( $hrs, 2, "0", STR_PAD_LEFT ) . ":" . str_pad( $mins, 2, "0", STR_PAD_LEFT );
             }
-        } 
+        }
         return $value;
     }
 
-    function getListViewSmarty($parentFieldArray, $vardef, $displayParams, $col)
+    public function formatField( $rawField, $vardef )
     {
-        $value = $parentFieldArray[strtoupper($vardef['name'])];
-        $value = $this->formatTimeslotField( $value );
-        $this->ss->assign('timeslot_formatted_value', $value);
-        return $this->fetch('include/SugarFields/Fields/Timeslot/ListView.tpl');
+        return $this->formatTimeslotField($rawField);
     }
 
     function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex) 
@@ -92,10 +89,13 @@ class SugarFieldTimeslot extends SugarFieldBase {
 
     public function save(&$bean, $params, $field, $properties, $prefix = ''){
         global $timedate;
-        if ( !isset($params[$prefix.$field]) ) {
+        /*if ( !isset($params[$prefix.$field]) ) {
             $bean->$field = -3600;
+            $bean->$field = '';
             return;
+        }*/
+        if (isset($params[$prefix.$field])){
+            $bean->$field = $params[$prefix.$field];
         }
-        $bean->$field = $params[$prefix.$field];
     }
 }

@@ -46,28 +46,29 @@
 {{assign var=flag_field value=$vardef.name|cat:_flag}}
 
 <table border="0" cellpadding="0" cellspacing="0">
-	<tr valign="middle">
-		<td nowrap>
-			<div id="{{$idname}}_time"></div>
-		</td>
-	</tr>
+  <tr valign="middle">
+    <td nowrap>
+      <div id="{{$idname}}_time"></div>
+    </td>
+  </tr>
 </table>
 <input type="hidden" id="{{$idname}}" name="{{$idname}}" value="{$fields[{{sugarvar key='name' stringFormat=true}}].value}">
+<input type="hidden" id="val_{{$idname}}" name="val_{{$idname}}" value="ok">
 <script type="text/javascript" src="include/SugarFields/Fields/Timeslot/Timeslot.js"></script>
 <script type="text/javascript">
-	var combo_{{$idname}} = new Timeslot("{$fields[{{sugarvar key='name' stringFormat=true}}].value}", "{{$idname}}", "{$TIME_FORMAT}", "{{$tabindex}}", "{{$vardef.help}}", "{{$vardef.help_minute}}");
-	text = combo_{{$idname}}.html('{{$displayParams.updateCallback}}');
-	document.getElementById('{{$idname}}_time').innerHTML = text;
+  var combo_{{$idname}} = new Timeslot("{$fields[{{sugarvar key='name' stringFormat=true}}].value}", "{{$idname}}", "{$TIME_FORMAT}", "{{$tabindex}}", "{{$vardef.help}}", "{{$vardef.help_minute}}");
+  text = combo_{{$idname}}.html('{{$displayParams.updateCallback}}');
+  document.getElementById('{{$idname}}_time').innerHTML = text;
 </script>
 
 <script type="text/javascript">
-	function update_{{$idname}}_available() {ldelim}
-		YAHOO.util.Event.onAvailable("{{$idname}}_time_hours", this.handleOnAvailable, this);
-		{rdelim}
+  function update_{{$idname}}_available() {ldelim}
+    YAHOO.util.Event.onAvailable("{{$idname}}_time_hours", this.handleOnAvailable, this);
+  {rdelim}
 
-	update_{{$idname}}_available.prototype.handleOnAvailable = function(me) {ldelim}
-		combo_{{$idname}}.update();
-		{rdelim}
+  update_{{$idname}}_available.prototype.handleOnAvailable = function(me) {ldelim}
+    combo_{{$idname}}.update();
+  {rdelim}
 
-	var obj_{{$idname}} = new update_{{$idname}}_available();
+  var obj_{{$idname}} = new update_{{$idname}}_available();
 </script>

@@ -582,8 +582,23 @@ function getValidationRules(field,module,id){
         alert(SUGAR.language.translate('app_strings', 'LBL_LOADING_ERROR_INLINE_EDITING'));
         return false;
     }
-
-    return "<script type='text/javascript'>addToValidate('EditView', \"" + field + "\", \"" + validation['type'] + "\", " + validation['required'] + ",\"" + validation['label'] + "\");</script>";
+    var script = "<script type='text/javascript'>\n";
+    for (var j = 0; j < validation['rules'].length; j++) {
+       var rule=validation['rules'][j];
+       switch(rule['validation']){
+         case 'composefield':
+             script += "addToValidateComposeField('EditView', \"" + rule['field'] + "\", \"" + rule['type'] + "\", " + rule['required'] + ",\"" + rule['label'] + "\");\n";
+             break;
+         case 'addtocomposefield':
+             script += "addRequireFieldToComposeField('EditView', \"" + rule['parent'] + "\", \"" + rule['field'] + "\", \"" + rule['type'] + "\", \"" + rule['label'] + "\");\n";
+             break;
+         default:
+             script += "addToValidate('EditView', \"" + field + "\", \"" + rule['type'] + "\", " + rule['required'] + ",\"" + rule['label'] + "\");\n";
+             break;
+       }
+    }
+    script += "</script>\n";
+    return script;
 }
 
 /**

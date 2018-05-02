@@ -37,14 +37,73 @@
  * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  ********************************************************************************/
-
-
-
-
 *}
 {include file="modules/DynamicFields/templates/Fields/Forms/coreTop.tpl"}
+{literal}
+<script language="Javascript">
+  function timeValueUpdate(){
+    var fieldname = 'defaultTime';
+    var timeseparator = ':';
+    var newtime = '';
+
+    id = fieldname + '_hours';
+    h = window.document.getElementById(id).value;
+    id = fieldname + '_minutes';
+    m = window.document.getElementById(id).value;
+    if( h == "" && m == "" ){
+      document.getElementById('val'+fieldname).value="ok";
+    } else {
+      document.getElementById('val'+fieldname).value="";
+    }
+    if( h == "" || m == "" ){
+      document.getElementById(fieldname).value="";
+      return;
+    }
+    if( h == "23" && m == "59" ){
+      s=60;
+    } else {
+      s=0;
+    }
+    newtime = (((parseInt(h,10)*60)+parseInt(m,10))*60)-3600+s;
+    document.getElementById(fieldname).value = newtime;
+    document.getElementById('val'+fieldname).value="ok";
+}
+</script>
+{/literal}
 <tr>
-  <td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_HELP_TEXT"}:</td><td>{if $hideLevel < 5 }<input type="text" name="ext4" value="{$help_minute}">{else}<input type="hidden" name="ext4" value="{$help_minute}">{$help_minute}{/if}
+  <td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MINUTE_HELP_TEXT"}:</td>
+  <td>{if $hideLevel < 5 }<input type="text" name="ext4" value="{$help_minute}">{else}<input type="hidden" name="ext4" value="{$help_minute}">{$help_minute}{/if}
   </td>
 </tr>
+<tr>
+  <td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_DEFAULT_VALUE"}:</td>
+  <td>
+    {if $hideLevel < 5}
+      <div style='padding:0px'>{html_options name='defaultHours' size='1' id='defaultTime_hours' options=$default_hours_values onchange="timeValueUpdate();"  selected=$default_hours} : 
+        {html_options  name='defaultMinutes' size='1'  id='defaultTime_minutes' options=$default_minutes_values onchange="timeValueUpdate();"  selected=$default_minutes}
+      </div>
+      <input type='hidden' name='defaultTime' id='defaultTime' value="{$defaultTime}">
+      <input type='hidden' name='valdefaultTime' id='valdefaultTime' value="{$valdefaultTime}">
+    {else}
+      <input type='hidden' name='defaultTime' id='defaultTime' value='{$defaultTime}'>{$defaultTime}
+    {/if}
+  </td>
+</tr>
+<tr>
+  <td class='mbLBL'>{sugar_translate module="DynamicFields" label="COLUMN_TITLE_MASS_UPDATE"}:</td>
+  <td>
+    {if $hideLevel < 5}
+       <input type="checkbox" id="massupdate" name="massupdate" value="1" {if !empty($vardef.massupdate)}checked{/if}/>
+    {else}
+       <input type="checkbox" id="massupdate" name="massupdate" value="1" disabled {if !empty($vardef.massupdate)}checked{/if}/>
+    {/if}
+  </td>
+</tr>
+{if $hideLevel < 5}
+  <script>
+    addToValidateComposeField('popup_form', "valdefaultTime", "timeslot", false, "Timeslot");
+    addRequireFieldToComposeField('popup_form', "valdefaultTime", "defaultTime_hours", "timeslot", "{$APP.LBL_HOURS}");
+    addRequireFieldToComposeField('popup_form', "valdefaultTime", "defaultTime_minutes", "timeslot", "{$APP.LBL_MINUTES}");
+  </script>
+{/if}
 {include file="modules/DynamicFields/templates/Fields/Forms/coreBottom.tpl"}

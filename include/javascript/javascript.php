@@ -193,10 +193,30 @@ class javascript{
 
 	}
 
-	function addFieldGeneric($field, $type,$displayName, $required, $prefix=''){
-		$this->script .= "addToValidate('".$this->formname."', '".$prefix.$field."', '".$type . "', {$this->getRequiredString($required)},'"
-                       . $this->stripEndColon(translate($displayName,$this->sugarbean->module_dir)) . "' );\n";
+	function addFieldGeneric($field, $type,$displayName, $required, $prefix='')
+        {
+            switch($type){
+                case 'timeslot':
+                    $this->addTimeslotField($field, $type, $displayName, $required, $prefix );
+                    break;
+                default:
+		    $this->script .= "addToValidate('".$this->formname."', '".$prefix.$field."', '".$type . "', {$this->getRequiredString($required)},'"
+                           . $this->stripEndColon(translate($displayName,$this->sugarbean->module_dir)) . "' );\n";
+                    break;
+            }
 	}
+
+        private function addTimeslotField($field, $type,$displayName, $required, $prefix='')
+        {
+            $this->script .= "addToValidate('".$this->formname."', '".$prefix.$field."', '".$type . "', {$this->getRequiredString($required)},'"
+                   . $this->stripEndColon(translate($displayName,$this->sugarbean->module_dir)) . "' );\n";
+            $this->script .= "addToValidateComposeField('".$this->formname."', 'val_".$prefix.$field."', '".$type . "', {$this->getRequiredString($required)},'"
+                   . $this->stripEndColon(translate($displayName,$this->sugarbean->module_dir)) . "' );\n";
+            $this->script .= "addRequireFieldToComposeField('".$this->formname."', 'val_".$prefix.$field."', '".$prefix.$field."_hours', '".$type . "','"
+                   . $this->stripEndColon(translate('LBL_HOURS',$this->sugarbean->module_dir)) . "' );\n";
+            $this->script .= "addRequireFieldToComposeField('".$this->formname."', 'val_".$prefix.$field."', '".$prefix.$field."_minutes', '".$type . "','"
+                   . $this->stripEndColon(translate('LBL_MINUTES',$this->sugarbean->module_dir)) . "' );\n";
+        }
 
     // Bug #47961 Generator of callback validator
     function addFieldCallback($field, $type, $displayName, $required, $prefix, $callback)

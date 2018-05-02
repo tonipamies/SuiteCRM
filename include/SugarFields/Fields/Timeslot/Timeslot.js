@@ -35,11 +35,71 @@
  * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  ********************************************************************************/
-function Timeslot(timeval,field,timeformat,tabindex,helphour,helpminute){this.timeval=timeval;if(typeof this.timeval=="undefined"){this.timeval="";}
-this.fieldname=field;this.helph=helphour;this.helpm=helpminute;v=parseInt(timeval,10);if(v==82800){this.hrs=23;this.mins=59;}else{v=v+3600;this.mins=v%3600;this.hrs=(v-this.mins)/3600;this.mins=this.mins/60;}
-this.timeformat=timeformat;this.tabindex=tabindex==null||isNaN(tabindex)?1:tabindex;this.timeseparator=this.timeformat.substring(2,3);}
-Timeslot.prototype.html=function(callback){var text='<select title="'+this.helph+'" class="datetimecombo_time" size="1" id="'+this.fieldname+'_hours" tabindex="'+this.tabindex+'" onchange="combo_'+this.fieldname+'.update(); '+callback+'">';text+='<option></option>';for(i=0;i<=23;i++){val=i<10?"0"+i:i;text+='<option value="'+val+'" '+(i==this.hrs?"SELECTED":"")+'>'+val+'</option>';}
-text+='\n</select>&nbsp;';text+=this.timeseparator;text+='\n&nbsp;<select title="'+this.helpm+'" class="datetimecombo_time" size="1" id="'+this.fieldname+'_minutes" tabindex="'+this.tabindex+'" onchange="combo_'+this.fieldname+'.update(); '+callback+'">';text+='\n<option></option>';for(i=0;i<=59;i++){val=i<10?"0"+i:i;text+='<option value="'+val+'" '+(i==this.mins?"SELECTED":"")+'>'+val+'</option>';}
-text+='\n</select>';return text;};Timeslot.prototype.update=function(){id=this.fieldname+'_hours';h=window.document.getElementById(id).value;id=this.fieldname+'_minutes';m=window.document.getElementById(id).value;if(h==""||m==""){document.getElementById(this.fieldname).value="";return;}
-if(h=="23"&&m=="59"){s=60;}else{s=0;}
-newdate=(((parseInt(h,10)*60)+parseInt(m,10))*60)-3600+s;document.getElementById(this.fieldname).value=newdate;};
+function Timeslot(timeval, field, timeformat, tabindex, helphour, helpminute) {
+  this.timeval = timeval;
+  if (typeof this.timeval == "undefined") {
+    this.timeval = "";
+  }
+  this.fieldname = field;
+  this.helph = helphour;
+  this.helpm = helpminute;
+  if (this.timeval == "") {
+    this.mins = 61;
+    this.hrs = 24;
+  } else {
+    v = parseInt(timeval, 10);
+    if (v == 82800) {
+      this.hrs = 23;
+      this.mins = 59;
+    } else {
+      v = v + 3600;
+      this.mins = v % 3600;
+      this.hrs = (v - this.mins) / 3600;
+      this.mins = Math.floor(this.mins / 60);
+    }
+  }
+  this.timeformat = timeformat;
+  this.tabindex = tabindex == null || isNaN(tabindex) ? 1 : tabindex;
+  this.timeseparator = this.timeformat.substring(2, 3);
+}
+Timeslot.prototype.html = function (callback) {
+  var text = '<select title="' + this.helph + '" class="datetimecombo_time" size="1" id="' + this.fieldname + '_hours" tabindex="' + this.tabindex + '" onchange="combo_' + this.fieldname + '.update(); ' + callback + '">';
+  text += '<option></option>';
+  for (i = 0; i <= 23; i++) {
+    val = i < 10 ? "0" + i : i;
+    text += '<option value="' + val + '" ' + (i == this.hrs ? "SELECTED" : "") + '>' + val + '</option>';
+  }
+  text += '\n</select>&nbsp;';
+  text += this.timeseparator;
+  text += '\n&nbsp;<select title="' + this.helpm + '" class="datetimecombo_time" size="1" id="' + this.fieldname + '_minutes" tabindex="' + this.tabindex + '" onchange="combo_' + this.fieldname + '.update(); ' + callback + '">';
+  text += '\n<option></option>';
+  for (i = 0; i <= 59; i++) {
+    val = i < 10 ? "0" + i : i;
+    text += '<option value="' + val + '" ' + (i == this.mins ? "SELECTED" : "") + '>' + val + '</option>';
+  }
+  text += '\n</select>';
+  return text;
+};
+Timeslot.prototype.update = function () {
+  id = this.fieldname + '_hours';
+  h = window.document.getElementById(id).value;
+  id = this.fieldname + '_minutes';
+  m = window.document.getElementById(id).value;
+  if( h == "" && m == "" ){
+    document.getElementById('val_'+this.fieldname).value="ok";
+  } else {
+    document.getElementById('val_'+this.fieldname).value="";
+  }
+  if (h == "" || m == "") {
+    document.getElementById(this.fieldname).value = "";
+    return;
+  }
+  if (h == "23" && m == "59") {
+    s = 60;
+  } else {
+    s = 0;
+  }
+  newdate = (((parseInt(h, 10) * 60) + parseInt(m, 10)) * 60) - 3600 + s;
+  document.getElementById(this.fieldname).value = newdate;
+  document.getElementById('val_'+this.fieldname).value="ok";
+};

@@ -37,9 +37,32 @@ if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
  * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  ********************************************************************************/
+require_once('modules/DynamicFields/templates/Fields/TemplateTimeslot.php');
+
 function get_body(&$ss, $vardef)
 {
+    $templateTimeslot = new TemplateTimeslot();
     $help_minute = !empty($vardef['help_minute']) ? $vardef['help_minute'] : '';
+    if (!empty($vardef['default'])){
+        if ($vardef['default'] == 82800){
+            $mins = "59";
+            $hrs = "23";
+        } else {
+            $v = $vardef['default'] + 3600;
+            $mins = $v % 3600;
+            $hrs = ($v - $mins) / 3600;
+            $mins = intdiv( $mins, 60 );
+        }
+    } else {
+        $mins = "";
+        $hrs = "";
+    }
     $ss->assign('help_minute', $help_minute);    
+    $ss->assign('default_hours', $hrs);
+    $ss->assign('default_minutes', $mins);
+    $ss->assign('defaultTime', $vardef['default']);
+    $ss->assign('valdefaultTime', 'ok');
+    $ss->assign('default_hours_values', array_flip($templateTimeslot->hoursEnum));
+    $ss->assign('default_minutes_values', array_flip($templateTimeslot->minutesEnum));
     return $ss->fetch('modules/DynamicFields/templates/Fields/Forms/timeslot.tpl');
 }

@@ -41,11 +41,7 @@
 {{if !empty($vardef.timeslot_formatted_value) }}
     {assign var="value" value={{$vardef.timeslot_formatted_value}} }
 {{else}}
-    {if strlen({{sugarvar key='value' string=true}}) <= 0}
-        {assign var="value" value={{sugarvar key='default_value' string=true}} }
-    {else}
-        {assign var="value" value={{sugarvar key='value' string=true}} }
-    {/if}
+    {assign var="value" value="" }
 {{/if}}
 
 <span class="sugar_field" id="{{sugarvar key='name'}}">{$value}</span>

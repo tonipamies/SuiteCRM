@@ -113,8 +113,57 @@ class HomeController extends SugarController{
                         }
                     }
                 }
-                $validate_array = array('type' => $fielddef['type'], 'required' => $fielddef['required'],'label' => $fielddef['label']);
-
+                switch ($fielddef['type']){
+                    case 'timeslot':
+                        $validate_array = 
+                        array( "rules" => 
+                            array( 
+                                array(
+                                    'validation' => 'default',
+                                    'type' => $fielddef['type'], 
+                                    'required' => $fielddef['required'],
+                                    'label' => $fielddef['label']
+                                ),
+                                array( 
+                                    'validation' => 'composefield', 
+                                    'type' => $fielddef['type'], 
+                                    'required' => $fielddef['required'],
+                                    'label' => $fielddef['label'],
+                                    'field' => "val_".$fielddef['name']
+                                ),
+                                array( 
+                                    'validation' => 'addtocomposefield', 
+                                    'type' => $fielddef['type'], 
+                                    'required' => true,
+                                    'label' => $app_strings["LBL_HOURS"],
+                                    'field' => $fielddef['name']."_hours",
+                                    'parent' => "val_".$fielddef['name']
+                                ),
+                                array( 
+                                    'validation' => 'addtocomposefield', 
+                                    'type' => $fielddef['type'], 
+                                    'required' => true,
+                                    'label' => $app_strings["LBL_MINUTES"],
+                                    'field' => $fielddef['name']."_minutes",
+                                    'parent' => "val_".$fielddef['name']
+                                ),
+                            )
+                        );
+                        break;
+                    default:
+                        $validate_array =
+                        array( "rules" =>
+                            array(
+                                array(
+                                    'validation' => 'default',
+                                    'type' => $fielddef['type'], 
+                                    'required' => $fielddef['required'],
+                                    'label' => $fielddef['label']
+                                ),
+                            )
+                        );
+                        break;
+                }
                 echo json_encode($validate_array);
             }
 
