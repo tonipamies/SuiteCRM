@@ -37,14 +37,7 @@
  * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  ********************************************************************************/
 *}
-
-{{if !empty($vardef.timeslot_formatted_value) }}
-    {assign var="value" value={{$vardef.timeslot_formatted_value}} }
-{{else}}
-    {assign var="value" value="" }
-{{/if}}
-
-<span class="sugar_field" id="{{sugarvar key='name'}}">{$value}</span>
+<span class="sugar_field" id="{{sugarvar key='name'}}">{sugar_timeslot value={{sugarvar key='value' stringFormat='false'}} }</span>
 {{if !empty($displayParams.enableConnectors)}}
 {if !empty($value)}
 {{sugarvar_connector view='DetailView'}}

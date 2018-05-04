@@ -72,10 +72,6 @@ class SugarFieldTimeslot extends SugarFieldBase {
 
     function getDetailViewSmarty($parentFieldArray, $vardef, $displayParams, $tabindex) 
     {
-        if(!empty($vardef['value'])){
-            $vardef['timeslot_formatted_value'] = $this->formatTimeslotField( $vardef['value'] );
-        }
-
         return $this->getSmartyView($parentFieldArray, $vardef, $displayParams, $tabindex, 'DetailView');
     }
 
@@ -89,11 +85,7 @@ class SugarFieldTimeslot extends SugarFieldBase {
 
     public function save(&$bean, $params, $field, $properties, $prefix = ''){
         global $timedate;
-        /*if ( !isset($params[$prefix.$field]) ) {
-            $bean->$field = -3600;
-            $bean->$field = '';
-            return;
-        }*/
+
         if (isset($params[$prefix.$field])){
             $bean->$field = $params[$prefix.$field];
         }
