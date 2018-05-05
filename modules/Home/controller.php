@@ -164,6 +164,24 @@ class HomeController extends SugarController{
                         );
                         break;
                 }
+                if (isset($fielddef['validation']['type'])){
+                    switch ($fielddef['validation']['type']){
+                        case 'callback':
+                            $newRule = 
+                            array(
+                                'validation' => $fielddef['validation']['type'],
+                                'type' => $fielddef['type'],
+                                'required' => $fielddef['required'],
+                                'function' => $fielddef['validation']['callback'],
+                                'label' => $fielddef['label']
+                            ); 
+                            array_push( $validate_array['rules'], $newRule );
+                            break;
+                        default:
+                            break;
+                    }
+                    $GLOBALS['log']->fatal("APO".print_r($validate_array,true));
+                }
                 echo json_encode($validate_array);
             }
 

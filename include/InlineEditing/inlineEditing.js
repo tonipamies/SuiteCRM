@@ -592,6 +592,9 @@ function getValidationRules(field,module,id){
          case 'addtocomposefield':
              script += "addRequireFieldToComposeField('EditView', \"" + rule['parent'] + "\", \"" + rule['field'] + "\", \"" + rule['type'] + "\", \"" + rule['label'] + "\");\n";
              break;
+         case 'callback':
+             script += "addToValidateCallback('EditView', \"" + field + "\", \"" + rule['type'] + "\", " + rule['required'] + ",\"" + rule['label'] + "\","+ rule['function'] + ");\n";
+             break;
          default:
              script += "addToValidate('EditView', \"" + field + "\", \"" + rule['type'] + "\", " + rule['required'] + ",\"" + rule['label'] + "\");\n";
              break;
