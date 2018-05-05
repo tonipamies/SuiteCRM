@@ -44,11 +44,11 @@ function get_body(&$ss, $vardef)
     $templateTimeslot = new TemplateTimeslot();
     $help_minute = !empty($vardef['help_minute']) ? $vardef['help_minute'] : '';
     if (!empty($vardef['default'])){
-        if ($vardef['default'] == 82800){
+        if ($vardef['default'] == 86400){
             $mins = "59";
             $hrs = "23";
         } else {
-            $v = $vardef['default'] + 3600;
+            $v = $vardef['default'];
             $mins = $v % 3600;
             $hrs = ($v - $mins) / 3600;
             $mins = intdiv( $mins, 60 );

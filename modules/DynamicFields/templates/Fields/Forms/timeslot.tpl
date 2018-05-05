@@ -64,7 +64,7 @@
     } else {
       s=0;
     }
-    newtime = (((parseInt(h,10)*60)+parseInt(m,10))*60)-3600+s;
+    newtime = (((parseInt(h,10)*60)+parseInt(m,10))*60)+s;
     document.getElementById(fieldname).value = newtime;
     document.getElementById('val'+fieldname).value="ok";
 }
