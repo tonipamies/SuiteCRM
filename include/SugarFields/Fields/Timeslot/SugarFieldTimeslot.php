@@ -89,4 +89,28 @@ class SugarFieldTimeslot extends SugarFieldBase {
             $bean->$field = $params[$prefix.$field];
         }
     }
+
+    public function importSanitize($value, $vardef, $focus, ImportFieldSanitize $settings)
+    {
+        if (!is_numeric($value)) {
+            $value = strtotime($value);
+            if ($value===false){
+                return false;
+            }
+            $dateparts = date_parse(date("Y-m-d H:ia",$value));
+            $hour = $dateparts["hour"];
+            $minute = $dateparts["minute"];
+            if ($hour == "23" && $minute == "59") {
+                $s = 60;
+            } else {
+                $s = 0;
+            }
+            return((($hour * 60) + $minute) * 60) + $s;
+        }
+        if (($value <0) || ($value>86400)){
+            return false;
+        }
+        return $value;
+    }
+
 }
