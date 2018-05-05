@@ -68,10 +68,10 @@ function smarty_function_sugar_timeslot($params, &$smarty)
     if ($params['value']==''){
         return '';
     }
-    if ($params['value'] == 82800 ){
+    if ($params['value'] == 86400 ){
         return "23:59";
     } else {
-        $v = $params['value'] + 3600;
+        $v = $params['value'];
         $mins = $v % 3600;
         $hrs = ($v - $mins) / 3600;
         $mins = $mins / 60;

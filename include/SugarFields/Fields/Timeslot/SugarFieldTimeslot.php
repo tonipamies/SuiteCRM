@@ -52,12 +52,11 @@ class SugarFieldTimeslot extends SugarFieldBase {
     private function formatTimeslotField($value)
     {
         if(!empty($value)){
-            if ($value == 82800 ){
+            if ($value == 86400 ){
                 $value = "23:59";
             } else {
-                $v = $value + 3600; 
-                $mins = $v % 3600;
-                $hrs = ($v - $mins) / 3600;
+                $mins = $value % 3600;
+                $hrs = ($value - $mins) / 3600;
                 $mins = $mins / 60;
                 $value = str_pad( $hrs, 2, "0", STR_PAD_LEFT ) . ":" . str_pad( $mins, 2, "0", STR_PAD_LEFT );
             }

@@ -48,11 +48,10 @@ function Timeslot(timeval, field, timeformat, tabindex, helphour, helpminute) {
     this.hrs = 24;
   } else {
     v = parseInt(timeval, 10);
-    if (v == 82800) {
+    if (v == 86400) {
       this.hrs = 23;
       this.mins = 59;
     } else {
-      v = v + 3600;
       this.mins = v % 3600;
       this.hrs = (v - this.mins) / 3600;
       this.mins = Math.floor(this.mins / 60);
@@ -60,7 +59,7 @@ function Timeslot(timeval, field, timeformat, tabindex, helphour, helpminute) {
   }
   this.timeformat = timeformat;
   this.tabindex = tabindex == null || isNaN(tabindex) ? 1 : tabindex;
-  this.timeseparator = this.timeformat.substring(2, 3);
+  this.timeseparator = ":";
 }
 Timeslot.prototype.html = function (callback) {
   var text = '<select title="' + this.helph + '" class="datetimecombo_time" size="1" id="' + this.fieldname + '_hours" tabindex="' + this.tabindex + '" onchange="combo_' + this.fieldname + '.update(); ' + callback + '">';
@@ -99,7 +98,7 @@ Timeslot.prototype.update = function () {
   } else {
     s = 0;
   }
-  newdate = (((parseInt(h, 10) * 60) + parseInt(m, 10)) * 60) - 3600 + s;
+  newdate = (((parseInt(h, 10) * 60) + parseInt(m, 10)) * 60) + s;
   document.getElementById(this.fieldname).value = newdate;
   document.getElementById('val_'+this.fieldname).value="ok";
 };
