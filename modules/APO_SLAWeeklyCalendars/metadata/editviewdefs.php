@@ -13,7 +13,7 @@ array (
       array (
         'buttons' =>
         array (
-         'SAVEJSVAL',
+         'SAVE',
          'CANCEL',
         ),
       ),

@@ -44,6 +44,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once 'modules/DynamicFields/DynamicField.php';
 require_once "data/Relationships/RelationshipFactory.php";
+require_once "data/BeanDuplicateCheckRules.php";
 
 
 /**
@@ -414,6 +415,17 @@ class SugarBean
      */
     public $old_modified_by_name;
 
+    /**
+     * duplicate check
+     */
+    public $duplicate_check;
+
+     /**
+     * Has duplicate check enabled
+     *
+     * @var bool
+     */
+    public $has_duplicate_check;
 
     /**
      * SugarBean constructor.
@@ -464,6 +476,16 @@ class SugarBean
                     $this->optimistic_lock = true;
                 }
             }
+
+            //
+            if (!empty($dictionary[$this->object_name]['duplicate_check'])) {
+                $this->has_duplicate_check = true;
+                $this->duplicate_check = new BeanDuplicateCheckRules($dictionary[$this->object_name]['duplicate_check'], $this->field_defs);
+            } else {
+                $this->has_duplicate_check = false;
+                $this->duplicate_check = null;
+            }
+
             $loaded_definitions[$this->object_name]['column_fields'] =& $this->column_fields;
             $loaded_definitions[$this->object_name]['list_fields'] =& $this->list_fields;
             $loaded_definitions[$this->object_name]['required_fields'] =& $this->required_fields;

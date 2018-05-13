@@ -43,7 +43,6 @@ if(!defined('sugarEntry') || !sugarEntry){
 }
 
 require_once('include/MVC/View/views/view.edit.php');
-require_once('modules/APO_SLAWeeklyCalendars/util.php');
 
 class APO_SLAWeeklyCalendarsViewEdit extends ViewEdit 
 {
@@ -66,14 +65,6 @@ class APO_SLAWeeklyCalendarsViewEdit extends ViewEdit
             trigger_error($deprecatedMessage, E_USER_DEPRECATED);
         }
         self::__construct();
-    }
-
-    function preDisplay()
-    {
-        global $mod_strings;
-        parent::preDisplay();
-        $out = getAPO_SLAWeeklyCalendarsJSVal();
-        echo $out;
     }
 
     function display() 

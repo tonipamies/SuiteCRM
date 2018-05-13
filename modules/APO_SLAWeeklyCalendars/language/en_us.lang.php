@@ -83,4 +83,6 @@ $mod_strings = array (
   'LBL_DETAILVIEW_PANEL1' => 'System',
   'LBL_DOTW_ALREADY_CREATED' => 'already created for',
   'ERR_IMPOSSIBLE_TO_CHECK' => 'Impossible to verify the duplicity of data. Please try again. If the problem persists, notify to your Administrator',
+  'ERR_DUP_DAYOFWEEK_CALENDAR' => '{%field.dayoftheweek.label%}: <b><i>{%field.dayoftheweek.value%}</i></b> already created for <b><i>{%field.slacalendar.value%}</i></b> {%module%}',
+  'ERR_DUP_NAME' => 'A {%module%} already exists with this name: <b><i>{%field.name.value%}</i></b>',
 );

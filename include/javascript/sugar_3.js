@@ -38,7 +38,7 @@
  */
 if(typeof(SUGAR)=="undefined"){SUGAR={namespace:function(ns){SUGAR[ns]=SUGAR[ns]||{};return((typeof SUGAR[ns]==="object")&&(SUGAR[ns]!==null))?SUGAR[ns]:false;},append:function(target,obj){for(var prop in obj){if(obj[prop]!==void 0)target[prop]=obj[prop];}
 return target;}};}
-SUGAR.namespace("themes");SUGAR.namespace("tour");SUGAR.namespace("sugarHome");SUGAR.namespace("subpanelUtils");SUGAR.namespace("ajaxStatusClass");SUGAR.namespace("tabChooser");SUGAR.namespace("utils");SUGAR.namespace("savedViews");SUGAR.namespace("dashlets");SUGAR.namespace("unifiedSearchAdvanced");SUGAR.namespace("searchForm");SUGAR.namespace("language");SUGAR.namespace("Studio");SUGAR.namespace("contextMenu");SUGAR.namespace("config");var nameIndex=0;var typeIndex=1;var requiredIndex=2;var msgIndex=3;var jstypeIndex=5;var minIndex=10;var maxIndex=11;var altMsgIndex=15;var compareToIndex=7;var arrIndex=12;var operatorIndex=13;var callbackIndex=16;var allowblank=8;var validate=new Array();var maxHours=24;var requiredTxt='Missing Required Field:';var invalidTxt='Invalid Value:';var scriptStartedTime=Date.now();var alertsTimeoutId;var inputsWithErrors=new Array();var tabsWithErrors=new Array();var lastSubmitTime=0;var alertList=new Array();var oldStartsWith='';function isSupportedIE(){var userAgent=navigator.userAgent.toLowerCase();if(userAgent.indexOf("msie")!=-1&&userAgent.indexOf("mac")==-1&&userAgent.indexOf("opera")==-1){var version=navigator.appVersion.match(/MSIE (\d+\.\d+)/)[1];if(version>=5.5&&version<10){return true;}else{return false;}}}
+SUGAR.namespace("themes");SUGAR.namespace("tour");SUGAR.namespace("sugarHome");SUGAR.namespace("subpanelUtils");SUGAR.namespace("ajaxStatusClass");SUGAR.namespace("tabChooser");SUGAR.namespace("utils");SUGAR.namespace("savedViews");SUGAR.namespace("dashlets");SUGAR.namespace("unifiedSearchAdvanced");SUGAR.namespace("searchForm");SUGAR.namespace("language");SUGAR.namespace("Studio");SUGAR.namespace("contextMenu");SUGAR.namespace("config");var nameIndex=0;var typeIndex=1;var requiredIndex=2;var msgIndex=3;var jstypeIndex=5;var minIndex=10;var maxIndex=11;var altMsgIndex=15;var compareToIndex=7;var arrIndex=12;var operatorIndex=13;var callbackIndex=16;var allowblank=8;var validate=new Array();var uniquecheck=new Array();var maxHours=24;var requiredTxt='Missing Required Field:';var invalidTxt='Invalid Value:';var scriptStartedTime=Date.now();var alertsTimeoutId;var inputsWithErrors=new Array();var tabsWithErrors=new Array();var lastSubmitTime=0;var alertList=new Array();var oldStartsWith='';function isSupportedIE(){var userAgent=navigator.userAgent.toLowerCase();if(userAgent.indexOf("msie")!=-1&&userAgent.indexOf("mac")==-1&&userAgent.indexOf("opera")==-1){var version=navigator.appVersion.match(/MSIE (\d+\.\d+)/)[1];if(version>=5.5&&version<10){return true;}else{return false;}}}
 function checkMinSupported(c,s){var current=c.split(".");var supported=s.split(".");for(var i in supported){if(current[i]&&parseInt(current[i])>parseInt(supported[i]))return true;else if(current[i]&&parseInt(current[i])<parseInt(supported[i]))return false;}
 return true;}
 function checkMaxSupported(c,s){var current=c.split(".");var supported=s.split(".");for(var i in supported){if(current[i]&&parseInt(current[i])>parseInt(supported[i]))return false;else if(current[i]&&parseInt(current[i])<parseInt(supported[i]))return true;}
@@ -68,7 +68,9 @@ function checkAll(form,field,value){for(i=0;i<form.elements.length;i++){if(form.
 form.elements[i].checked=value;}}
 function replaceAll(text,src,rep){offset=text.toLowerCase().indexOf(src.toLowerCase());while(offset!=-1){text=text.substring(0,offset)+rep+text.substring(offset+src.length,text.length);offset=text.indexOf(src,offset+rep.length+1);}
 return text;}
-function addForm(formname){validate[formname]=new Array();}
+function addForm(formname){validate[formname]=new Array();uniquecheck[formname] = new Array();}
+function addToCheckUnique(formname,rulename,field,reqfields,msgs){if(typeof uniquecheck[formname]=='undefined'){addForm(formname);}
+uniquecheck[formname].push(new Array(rulename,field,reqfields,msgs));}
 function addToValidate(formname,name,type,required,msg){if(typeof validate[formname]=='undefined'){addForm(formname);}
 validate[formname][validate[formname].length]=new Array(name,type,required,msg);}
 function addToValidateComposeField(formname,name,type,required,msg){addToValidate(formname,name,type,required,msg);validate[formname][validate[formname].length-1][jstypeIndex]='composefield';validate[formname][validate[formname].length-1][compareToIndex]=new Array();}
@@ -160,7 +162,7 @@ return false;return validate_form(formname,'');}
 function add_error_style(formname,input,txt,flash){var raiseFlag=false;if(typeof flash=="undefined")
 flash=true;try{inputHandle=typeof input=="object"?input:document.forms[formname][input];style=get_current_bgcolor(inputHandle);if(txt.substring(txt.length-1)==':')
 txt=txt.substring(0,txt.length-1)
-requiredTxt=SUGAR.language.get('app_strings','ERR_MISSING_REQUIRED_FIELDS');invalidTxt=SUGAR.language.get('app_strings','ERR_INVALID_VALUE');nomatchTxt=SUGAR.language.get('app_strings','ERR_SQS_NO_MATCH_FIELD');matchTxt=txt.replace(requiredTxt,'').replace(invalidTxt,'').replace(nomatchTxt,'');YUI().use('node',function(Y){Y.one(inputHandle).get('parentNode').get('children').each(function(node,index,nodeList){if(node.hasClass('validation-message')&&node.get('text').search(matchTxt)>1){raiseFlag=true;}});});if(!raiseFlag){errorTextNode=document.createElement('div');errorTextNode.className='required validation-message';errorTextNode.innerHTML=txt;if(inputHandle.parentNode.className.indexOf('x-form-field-wrap')!=-1){inputHandle.parentNode.parentNode.appendChild(errorTextNode);}
+requiredTxt=SUGAR.language.get('app_strings','ERR_MISSING_REQUIRED_FIELDS');invalidTxt=SUGAR.language.get('app_strings','ERR_INVALID_VALUE');nomatchTxt=SUGAR.language.get('app_strings','ERR_SQS_NO_MATCH_FIELD');matchTxt=txt.replace(requiredTxt,'').replace(invalidTxt,'').replace(nomatchTxt,'');YUI().use('node',function(Y){Y.one(inputHandle).get('parentNode').get('children').each(function(node,index,nodeList){if(node.hasClass('validation-message')&&node.get('text').search(matchTxt)>=0){raiseFlag=true;}});});if(!raiseFlag){errorTextNode=document.createElement('div');errorTextNode.className='required validation-message';errorTextNode.innerHTML=txt;if(inputHandle.parentNode.className.indexOf('x-form-field-wrap')!=-1){inputHandle.parentNode.parentNode.appendChild(errorTextNode);}
 else{inputHandle.parentNode.appendChild(errorTextNode);}
 if(flash)
 inputHandle.style.backgroundColor="#FF0000";inputsWithErrors.push(inputHandle);}
@@ -229,6 +231,13 @@ add_error_style(formname,showErrorsOn[error].value,formsWithFieldLogic.msg);}
 else if(!isError)
 formsWithFieldLogic=null;}}
 if(formWithPrecision){if(!isValidPrecision(formWithPrecision.float.value,formWithPrecision.precision.value)){isError=true;add_error_style(formname,'default',SUGAR.language.get('app_strings','ERR_COMPATIBLE_PRECISION_VALUE'));}else if(!isError){isError=false;}}
+var module="";if(typeof form["module"]!='undefined'){module=form["module"].value;}else{module=module_sugar_grp1}
+var id="";if(typeof form["record"]!="undefined"){id=form["record"].value;}else{id=$("input[name=record]").attr("value");if(typeof id=='undefined'){id=$(form).closest('tr').find('[type=checkbox]').attr("value")}}var jsonrules='{"rules":[';for(var i=0;i<uniquecheck[formname].length;i++){var ruleName=uniquecheck[formname][i][nameIndex];if(i>0)
+jsonrules+=",";jsonrules+='{"rulename":"'+uniquecheck[formname][i][nameIndex]+'","field":"'+uniquecheck[formname][i][1]+'","fields":[';if(typeof uniquecheck[formname][i][2]!='undefined'){var values='"values":[';var found='"found":[';var field=Object.keys(uniquecheck[formname][i][2]);for(var j=0;j<field.length;j++){if(j>0){jsonrules+=",";values+=",";found+=",";}
+jsonrules+='"'+field[j]+'"';if(typeof field[j]!='undefined'&&typeof form[field[j]]!='undefined'&&typeof form[field[j]]!='string'){if(uniquecheck[formname][i][2][field[j]][0]=="relate"){values+='["'+form[field[j]].value+'","'+form[uniquecheck[formname][i][2][field[j]][1]].value+'"]';}else{values+='"'+form[field[j]].value+'"';}
+found+="true";}else{values+='"undefined"';found+="false";}}
+jsonrules+="],"+values+"],"+found+"]}";}else{add_error_style(formname,uniquecheck[formname][i][2],'ERROR!!!!');isError=true;}}
+jsonrules+="]}";isError|=checkUniqueRules(formname,module,id,jsonrules);
 if(isError==true){var nw,ne,sw,se;if(self.pageYOffset)
 {nwX=self.pageXOffset;seX=self.innerWidth;nwY=self.pageYOffset;seY=self.innerHeight;}
 else if(document.documentElement&&document.documentElement.scrollTop)
@@ -646,6 +655,10 @@ SUGAR.MultiEnumAutoComplete.getMultiSelectValuesFromKeys=function(options_index,
 var selected_values=val_string.split("^,^");if(selected_values.length>0&&selected_values.indexOf('')==selected_values.length-1){selected_values.pop();}
 var final_arr=new Array();for(idx in selected_values){for(o_idx in opts){if(selected_values[idx]==o_idx){final_arr.push(opts[o_idx]);}}}
 return final_arr;}
+function checkUniqueRules(formname,module,id,rules){$.ajaxSetup({"async":false});var result=$.post('index.php',{'module':'Home','action':'checkUniqueRules','current_module':module,'id':id,'rules':rules,'to_pdf':true},'json');$.ajaxSetup({"async":true});try{var validation=JSON.parse(result.responseText);}catch(e){alert(SUGAR.language.translate('app_strings','LBL_ERROR_CHECK_UNIQUE_RULES'));return true;}
+if(!validation.iserror){return false;}
+for(var i=0;i<validation.error.length;i++){switch(validation.error[i].type){case'field':add_error_style(formname,validation.error[i].field,validation.error[i].msg);break;case'system':alert(validation.error[i].msg);break;}}
+return true;}
 function convertReportDateTimeToDB(dateValue,timeValue){var date_match=dateValue.match(date_reg_format);var time_match=timeValue.match(/([0-9]{1,2})\:([0-9]{1,2})([ap]m)/);if(date_match!=null&&time_match!=null){time_match[1]=parseInt(time_match[1]);if(time_match[3]=='pm'){time_match[1]=time_match[1]+12;if(time_match[1]>=24){time_match[1]=time_match[1]-24;}}else if(time_match[3]=='am'&&time_match[1]==12){time_match[1]=0;}
 if(time_match[1]<10){time_match[1]='0'+time_match[1];}
 return date_match[date_reg_positions['Y']]+"-"+date_match[date_reg_positions['m']]+"-"+date_match[date_reg_positions['d']]+' '+time_match[1]+':'+time_match[2]+':00';}

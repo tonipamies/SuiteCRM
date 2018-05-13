@@ -283,29 +283,43 @@ class javascript{
 		$this->script .= "addToValidateIsInArray('{$this->formname}', '{$name}', '{$type}', {$req}, '".$this->stripEndColon(translate($displayName,$this->sugarbean->module_dir))."', '{$arr}', '{$operator}');\n";
     }
 
-	function addAllFields($prefix,$skip_fields=null, $translate = false){
-		if (!isset($skip_fields))
-		{
-			$skip_fields = array();
-		}
-		foreach($this->sugarbean->field_name_map as $field=>$value){
-			if (!isset($skip_fields[$field]))
-			{
-			    if(isset($value['type']) && ($value['type'] == 'datetimecombo' || $value['type'] == 'datetime')) {
-			    	$isRequired = (isset($value['required']) && $value['required']) ? 'true' : 'false';
-			        $this->addSpecialField($value['name'] . '_date', $value['name'], 'datetime', $isRequired);
-                    if ($value['type'] != 'link'  && isset($this->sugarbean->field_name_map[$field]['validation'])) {
+    function addAllFields($prefix,$skip_fields=null, $translate = false)
+    {
+        if (!isset($skip_fields))
+        {
+            $skip_fields = array();
+        }
+        foreach($this->sugarbean->field_name_map as $field=>$value){
+            if (!isset($skip_fields[$field]))
+            {
+                if (isset($value['type']) && ($value['type'] == 'datetimecombo' || $value['type'] == 'datetime')) 
+                {
+                    $isRequired = (isset($value['required']) && $value['required']) ? 'true' : 'false';
+                    $this->addSpecialField($value['name'] . '_date', $value['name'], 'datetime', $isRequired);
+                    if ($value['type'] != 'link'  && isset($this->sugarbean->field_name_map[$field]['validation']))
+                    {
                         //datetime should also support the isbefore or other type of validate
                         $this->addField($field, '', $prefix,'',$translate);
                     }
-			    } else if (isset($value['type'])) {
-					if ($value['type'] != 'link') {
-			  			$this->addField($field, '', $prefix,'',$translate);
-					}
-				}
-			}
-		}
-	}
+                } else {
+                    if (isset($value['type'])) 
+                    {
+                        if ($value['type'] != 'link') 
+                        {
+                            $this->addField($field, '', $prefix,'',$translate);
+                        }
+                    }
+                }
+                if ($this->sugarbean->has_duplicate_check)
+                {
+                    $rules = $this->sugarbean->duplicate_check->isFieldOfDuplicateCheckRule( $value['name'] );
+                    foreach ( $rules as $rule ){
+                       $this->script .= $rule->getValidateFunction( $this->formname, $value['name'] ) . "\n";
+                    }
+                }
+            }
+        }
+    }
 
     function addActionMenu() {
         $this->script .= "$(document).ready(SUGAR.themes.actionMenu);";

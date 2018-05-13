@@ -3728,3 +3728,7 @@ $app_list_strings['moduleList']['APO_SLACalendars'] = 'SLA Calendars';
 $app_list_strings['moduleList']['APO_SLAWeeklyCalendars'] = 'SLA Weekly Calendars';
 $app_strings['LBL_TABGROUP_SLACONTRACTS'] = 'SLA Contracts';
 $app_strings['LBL_DAYOFTHEWEEK'] = 'Day of the week';
+$app_strings['LBL_ERROR_UNIQUE_CHECK'] = "There was an error on the Unique Check System. Please contact with the System Administrator to fix this.";
+$app_strings['LBL_ERROR_UNIQUE_CHECK_RULES'] = "There was an error on the Unique Check System. Your session may have timed out. Please contact with the System Administrator to fix this.";
+$app_strings['LBL_ERROR_UNIQUE_CHECK_MISSING'] = "There was an Unique Check system error (the value of some required field was missing). Please contact with the System Administrator to fix this.";
+$app_strings['LBL_ERROR_UNIQUE_CHECK_NORULES'] = "There was an ierror loading the Unique Check Rules. Please contact with the System Administrator to fix this.";

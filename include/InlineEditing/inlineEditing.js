@@ -450,7 +450,7 @@ function setValueClose(value){
         $(".inlineEditActive").html(value + '<div class="inlineEditIcon">' + inlineEditIcon + '</div>');
         $(".inlineEditActive").removeClass("inlineEditActive");
     });
-
+    uniquecheck = new Array();
     buildEditField();
 }
 
@@ -594,6 +594,9 @@ function getValidationRules(field,module,id){
              break;
          case 'callback':
              script += "addToValidateCallback('EditView', \"" + field + "\", \"" + rule['type'] + "\", " + rule['required'] + ",\"" + rule['label'] + "\","+ rule['function'] + ");\n";
+             break;
+         case 'duplicate_check':
+             script += "addToCheckUnique('EditView', '" + rule['name'] + "', '" + field + "', " + rule['fields'] + ", " + rule['errorMessages'] + ");\n";
              break;
          default:
              script += "addToValidate('EditView', \"" + field + "\", \"" + rule['type'] + "\", " + rule['required'] + ",\"" + rule['label'] + "\");\n";

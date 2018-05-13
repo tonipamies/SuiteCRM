@@ -246,6 +246,11 @@ class TemplateHandler
             $sugarBean->field_name_map = $defs;
             $sugarBean->module_dir = $module;
 
+            if (!empty($dictionary[$module]['duplicate_check'])) {
+                $sugarBean->has_duplicate_check = true;
+                $sugarBean->duplicate_check = new BeanDuplicateCheckRules($dictionary[$module]['duplicate_check'], $defs);
+            }
+
             $javascript = new javascript();
             $view = $view === 'QuickCreate' ? "QuickCreate_{$module}" : $view;
             $javascript->setFormName($view);

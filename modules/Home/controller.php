@@ -43,6 +43,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
 }
 
 include_once("include/InlineEditing/InlineEditing.php");
+require_once "data/BeanDuplicateCheckRules.php";
 
 class HomeController extends SugarController{
 
@@ -83,6 +84,69 @@ class HomeController extends SugarController{
 
     }
 
+    public function action_checkUniqueRules()
+    {
+        global $app_strings;
+        $arules = json_decode(html_entity_decode($_REQUEST['rules']));
+        if($_REQUEST['rules'] && $_REQUEST['current_module']){
+            if($_REQUEST['id']){
+                $bean = BeanFactory::getBean($_REQUEST['current_module'],$_REQUEST['id']);
+            } else {
+                $bean = new $_REQUEST['current_module'];
+            }
+            if (!$bean->has_duplicate_check){
+                $return_json["iserror"] = true;
+                $return_json["error"] = 
+                array(
+                    array(
+                        "type" => "system",
+                        "msg" => $app_strings["LBL_ERROR_UNIQUE_CHECK"],
+                    ),
+                );
+            } else {
+                $return_json["iserror"] = false;
+                $return_json["error"] = array();
+                foreach($arules as $rules ){
+                    foreach($rules as $rule ){
+                        $result = $bean->duplicate_check->checkForDuplicateCheckRule( $rule, $bean, $_REQUEST['current_module'] ); 
+                        switch($result["return"]){
+                            case "rulenotfound":
+                                $return_json["iserror"] = true;
+                                array_push( $return_json["error"], array(
+                                                                       "type" => "system",
+                                                                       "msg" => $app_strings["LBL_ERROR_UNIQUE_CHECK_NORULES"],
+                                                                   ));
+                                break;
+                            case "missingfields":
+                                $return_json["iserror"] = true;
+                                array_push( $return_json["error"], array(
+                                                                       "type" => "system",
+                                                                       "msg" => $app_strings["LBL_ERROR_UNIQUE_CHECK_MISSING"],
+                                                                   ));
+                                break;
+                            case "duplicated":
+                                $return_json["iserror"] = true;
+                                array_push( $return_json["error"], array(
+                                                                       "type" => "field",
+                                                                       "msg" => $result["msgError"],
+                                                                       "field" => $rule->field,
+                                                                   ));
+                                break;
+                        }
+                    }
+                }
+            }
+        } else {
+            $return_json["iserror"] = true;
+            $return_json["error"] = 
+            array(
+                "type" => "system",
+                "msg" => $app_strings["LBL_ERROR_UNIQUE_CHECK_NORULES"],
+            );
+        }
+        echo json_encode($return_json);
+    }
+
     public function action_getValidationRules(){
         global $app_strings, $mod_strings;
 
@@ -107,7 +171,6 @@ class HomeController extends SugarController{
                     $fielddef['label'] = $app_strings[$fielddef['vname']];
                 }else{
                     if (isset($mod_strings[$fielddef['vname']])) {$fielddef['label'] = $mod_strings[$fielddef['vname']];} else {
-                        $GLOBALS['log']->warn("Unknown text label in a fielddef: {$fielddef['vname']}");
                         if(!isset($fielddef['label'])) {
                             $fielddef['label'] = null;
                         }
@@ -180,7 +243,21 @@ class HomeController extends SugarController{
                         default:
                             break;
                     }
-                    $GLOBALS['log']->fatal("APO".print_r($validate_array,true));
+                }
+                if ($bean->has_duplicate_check) {
+                    $rules = $bean->duplicate_check->isFieldOfDuplicateCheckRule($_REQUEST['field']);
+                    foreach( $rules as $rule ){
+                        $tmpRule = $rule->getRuleInformation();
+                        $newRule = 
+                        array(
+                            'validation' => 'duplicate_check',
+                            'name' => $tmpRule['nameRule'],
+                            'fields' => $tmpRule['fields'],
+                            'errorMessages' => $tmpRule['errorMessages'],
+                            'label' => $fielddef['label']
+                        ); 
+                        array_push( $validate_array['rules'], $newRule );
+                    }
                 }
                 echo json_encode($validate_array);
             }
