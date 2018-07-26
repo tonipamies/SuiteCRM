@@ -593,7 +593,7 @@
       var hideelement = true;
       for (var i = 0; i < row.childNodes.length; i++) {
         if ( typeof(row.childNodes[i].tagName) != 'undefined' && row.childNodes[i].tagName == "DIV" && row.childNodes[i].classList.contains(c) ){
-          if (!row.childNodes[i].hidden){
+          if (!row.childNodes[i].hidden && row.childNodes[i].childElementCount>0){
             hideelement = false;
             break;
           }
@@ -641,7 +641,7 @@
       var hideelement =  true;
       for (var i = 0; i < row.childNodes.length; i++) {
         if ( typeof(row.childNodes[i].tagName) != 'undefined' && row.childNodes[i].tagName == "DIV" && row.childNodes[i].classList.contains(c) ){
-          if (!row.childNodes[i].hidden){
+          if (!row.childNodes[i].hidden && row.childNodes[i].childElementCount>0){
             hideelement = false;
             break;
           }
