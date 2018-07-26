@@ -51,6 +51,16 @@
       }
     } else {
       var field = YAHOO.util.Dom.get(element);
+      if (field == null){
+        var divele = $('#content div[field=' + element + ']');
+        if (divele.size() == 1){
+          var node = document.createElement('span');
+          node.setAttribute("id",element);
+          node.setAttribute("class","sugar_field");
+          divele[0].insertBefore(node,divele[0].childNodes[0]);
+          return node;
+        }
+      }
       return field;
     }
   }
@@ -255,7 +265,7 @@
       }
     }
     if (field.className && (field.className == "DateTimeCombo" || field.className == "Date")) {
-      return SUGAR.util.DateUtils.parse(field.value, "user");
+      return field.value;
     }
     if (field.tagName == "INPUT" && field.type.toUpperCase() == "CHECKBOX") {
       return field.checked ? '1' : '0';
@@ -441,9 +451,25 @@
         for (var i = 0; i < this.fields[0].length; i++) {
           if (this.fields[0][i] == result['panelvisibility'][j]['name'] ){
             if (result['panelvisibility'][j]['value']){
-              this.fields[1][i].hidden = false;
+              if ($(this.fields[1][i]).hasClass('lineSeparator')){
+                if (this.view=="EditView"){
+                  this.fields[1][i].parentNode.hidden = false;
+                } else {
+                  this.fields[1][i].parentNode.parentNode.hidden = false;
+                }
+              } else {
+                this.fields[1][i].hidden = false;
+              }
             } else {
-              this.fields[1][i].hidden = true;
+              if ($(this.fields[1][i]).hasClass('lineSeparator')){
+                if (this.view=="EditView"){
+                  this.fields[1][i].parentNode.hidden = true;
+                } else {
+                  this.fields[1][i].parentNode.parentNode.hidden = true;
+                }
+              } else {
+                this.fields[1][i].hidden = true;
+              }
             }
           }
         }
@@ -474,10 +500,12 @@
         case '-1':
           break;
         case 'getfocus':
-          $('#content ul.nav.nav-tabs > li[role=presentation]').eq(num).addClass('active');
-          $('#content ul.nav.nav-tabs > li[role=presentation]').eq(active).removeClass('active');
-          $('#content div.tab-content div.tab-pane-NOBOOTSTRAPTOGGLER').hide();
-          $('#content div.tab-content div.tab-pane-NOBOOTSTRAPTOGGLER').eq(num).show().addClass('active').addClass('in');
+          if (num != active){
+            $('#content ul.nav.nav-tabs > li[role=presentation]').eq(num).addClass('active');
+            $('#content ul.nav.nav-tabs > li[role=presentation]').eq(active).removeClass('active');
+            $('#content div.tab-content div.tab-pane-NOBOOTSTRAPTOGGLER').hide();
+            $('#content div.tab-content div.tab-pane-NOBOOTSTRAPTOGGLER').eq(num).show().addClass('active').addClass('in');
+          }  
           break;
       }
     } else {
@@ -621,11 +649,13 @@
       }
       if (hideelement){
         row.hidden = true;
-        if (row.parentNode.classList.contains("tab-content")){
-          row.parentNode.hidden = true;
-        }
-        if (row.parentNode.parentNode.parentNode.classList.contains("panel")){
-          row.parentNode.parentNode.parentNode.hidden = true;
+        if ($(row.parentNode).children().size() == $(row.parentNode).children('[hidden]').size()){
+          if (row.parentNode.classList.contains("tab-content")){
+            row.parentNode.hidden = true;
+          }
+          if (row.parentNode.parentNode.parentNode.classList.contains("panel")){
+            row.parentNode.parentNode.parentNode.hidden = true;
+          }
         }
       }
     }

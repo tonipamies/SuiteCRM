@@ -161,7 +161,7 @@
            meta/studio defines the first panel should always be tab.
        *}
         {if $config.enable_action_menu and $config.enable_action_menu != false}
-        {{if $tabCount == 0}}
+        {{if tabCount == 0}}
         {*<!-- TAB CONTENT USE TABS -->*}
         <div class="tab-content">
             {{else}}
@@ -180,11 +180,11 @@
                     {{if isset($tabDefs[$label_upper].newTab) && $tabDefs[$label_upper].newTab == true}}
                     {{if $tabCount == '0'}}
                     <div class="tab-pane-NOBOOTSTRAPTOGGLER active fade in" id='tab-content-{{$tabCount}}'>
-                        {{include file='themes/SuiteP/include/DetailView/tab_panel_content.tpl'}}
+                        {{include file='themes/SuiteP/include/DetailView/tab_panel_content.tpl' tabId=$tabCount}}
                     </div>
                     {{else}}
                     <div class="tab-pane-NOBOOTSTRAPTOGGLER fade" id='tab-content-{{$tabCount}}'>
-                        {{include file='themes/SuiteP/include/DetailView/tab_panel_content.tpl'}}
+                        {{include file='themes/SuiteP/include/DetailView/tab_panel_content.tpl' tabId=$tabCount}}
                     </div>
                     {{/if}}
                     {{/if}}
@@ -202,7 +202,7 @@
                         {{capture name=label_upper assign=label_upper}}{{$label|upper}}{{/capture}}
                         {{if $tabCount == '0'}}
                         <div class="tab-pane-NOBOOTSTRAPTOGGLER active fade in" id='tab-content-{{$tabCount}}'>
-                            {{include file='themes/SuiteP/include/DetailView/tab_panel_content.tpl'}}
+                            {{include file='themes/SuiteP/include/DetailView/tab_panel_content.tpl' tabId=$tabCount}}
                         </div>
                         {{else}}
 
@@ -268,7 +268,7 @@
                             <div class="panel-body {{$collapse}} panelContainer" id="{{$panelId}}"  data-id="{{$label_upper}}">
                                 <div class="tab-content">
                                     <!-- TAB CONTENT -->
-                                    {{include file='themes/SuiteP/include/DetailView/tab_panel_content.tpl'}}
+                                    {{include file='themes/SuiteP/include/DetailView/tab_panel_content.tpl' tabId=panel-$panelId}}
                                 </div>
                             </div>
                         </div>
@@ -287,7 +287,7 @@
                         <div class="panel-body {{$collapse}} panelContainer" id="{{$panelId}}" data-id="{{$label_upper}}">
                             <div class="tab-content">
                                 <!-- TAB CONTENT -->
-                                {{include file='themes/SuiteP/include/DetailView/tab_panel_content.tpl'}}
+                                {{include file='themes/SuiteP/include/DetailView/tab_panel_content.tpl' tabId=panel-$panelId}}
                             </div>
                         </div>
                     </div>

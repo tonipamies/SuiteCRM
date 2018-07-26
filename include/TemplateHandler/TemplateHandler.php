@@ -196,11 +196,11 @@ class TemplateHandler
             $sugarBean->field_name_map = $defs;
             $sugarBean->module_dir = $module;
 
-            if (!empty($dictionary[$module]['visibility'])) {
-                $sugarBean->visibility = $dictionary[$module]['visibility'];
+            if (!empty($dictionary[$mod]['visibility'])) {
+                $sugarBean->visibility = $dictionary[$mod]['visibility'];
             }
             if (!empty($dictionary[$module]['formandvis'])) {
-                $sugarBean->formandvis = $dictionary[$module]['formandvis'];
+                $sugarBean->formandvis = $dictionary[$mod]['formandvis'];
             }
             $skipFiles = array();
             foreach( $defs as $def )
@@ -282,16 +282,16 @@ class TemplateHandler
             $sugarBean->field_name_map = $defs;
             $sugarBean->module_dir = $module;
 
-            if (!empty($dictionary[$module]['duplicate_check'])) {
+            if (!empty($dictionary[$mod]['duplicate_check'])) {
                 $sugarBean->has_duplicate_check = true;
-                $sugarBean->duplicate_check = new BeanDuplicateCheckRules($dictionary[$module]['duplicate_check'], $defs);
+                $sugarBean->duplicate_check = new BeanDuplicateCheckRules($dictionary[$mod]['duplicate_check'], $defs);
             }
 
-            if (!empty($dictionary[$module]['visibility'])) {
-                $sugarBean->visibility = $dictionary[$module]['visibility'];
+            if (!empty($dictionary[$mod]['visibility'])) {
+                $sugarBean->visibility = $dictionary[$mod]['visibility'];
             }
             if (!empty($dictionary[$module]['formandvis'])) {
-                $sugarBean->formandvis = $dictionary[$module]['formandvis'];
+                $sugarBean->formandvis = $dictionary[$mod]['formandvis'];
             }
 
             $javascript = new javascript();
