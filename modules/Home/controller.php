@@ -300,7 +300,6 @@ class HomeController extends SugarController{
                         $validate_array['formconfig']['hasformulas'] = true;
                     }
                 }
-                if (isset($bean->visibility) and is_array($bean->visibility)){
                 foreach( $bean->visibility as $key => $object )
                 {
                     if (!isset($object['objecttype'])){
@@ -323,7 +322,6 @@ class HomeController extends SugarController{
                             }
                             break;
                     }
-                }
                 }
                 echo json_encode($validate_array);
             }

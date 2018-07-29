@@ -596,6 +596,7 @@ function getValidationRules(field,module,id){
         var validation = JSON.parse(result.responseText);
     } catch(e) {
         alert(SUGAR.language.translate('app_strings', 'LBL_LOADING_ERROR_INLINE_EDITING'));
+        alert( e.message + result.responseText);
         return false;
     }
     var script = "<script type='text/javascript'>\n";
