@@ -453,6 +453,7 @@
         var result = JSON.parse(result.responseText);
     } catch(e) {
         alert(SUGAR.language.translate('app_strings', 'LBL_LOADING_ERROR_INLINE_EDITING'));
+        alert(e.message);
         return false;
     }
 
