@@ -508,7 +508,15 @@ class HomeController extends SugarController{
         if (!isset($_REQUEST['fields'])){
             $_REQUEST['fields'] = array();
         }
-$GLOBALS['log']->debug("APO::".print_r($_REQUEST,true));
+
+        $ret = array( "formulas" => array(), "visibility" => array(), "panelvisibility" => array(), "tabvisibility" => array());
+
+        if (!isset($_REQUEST['getbean']) || !isset($_REQUEST['inlinetd']) || !isset($_REQUEST['event']) || !isset($_REQUEST['current_module'])){
+            echo json_encode( $ret );
+            return;
+        }
+
+$GLOBALS['log']->fatal("APO::".print_r($_REQUEST,true));
         $getbean = ($_REQUEST['getbean'] == 'true' || $_REQUEST['inlinetd'] == 'true' );
         $nullfields = $this->isNecessaryLoadBean( $_REQUEST['fieldsdeps'], $_REQUEST['inlinetd'] == 'true' , $_REQUEST['event'] );
         if (!empty($nullfields)){
@@ -526,7 +534,6 @@ $GLOBALS['log']->debug("APO::".print_r($_REQUEST,true));
             }
         }
 
-        $ret = array( "formulas" => array(), "visibility" => array(), "panelvisibility" => array(), "tabvisibility" => array());
 
         foreach($fields['formula'] as $key => $field){
             switch($field['formula']['type']){
