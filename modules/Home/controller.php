@@ -300,6 +300,7 @@ class HomeController extends SugarController{
                         $validate_array['formconfig']['hasformulas'] = true;
                     }
                 }
+                if (isset($bean->visibility) and is_array($bean->visibility)){
                 foreach( $bean->visibility as $key => $object )
                 {
                     if (!isset($object['objecttype'])){
@@ -322,6 +323,7 @@ class HomeController extends SugarController{
                             }
                             break;
                     }
+                }
                 }
                 echo json_encode($validate_array);
             }
@@ -459,7 +461,7 @@ class HomeController extends SugarController{
             $focus = new $beanList[$module];
         }
         $fieldsret = 
-            array( 
+            array(
                 "formula" => array(), 
                 "visibility" => array(),
                 "panelvisibility" => array(),
@@ -533,7 +535,11 @@ class HomeController extends SugarController{
                     require_once( $field['formula']['function']['include'] );
                     $value = $field['formula']['function']['name']( $fields["bean"], $_REQUEST );
                     $_REQUEST['fieldsdeps'][$key] = $value;
-                    $field = array( "name" => $key, "value" => $value );
+                    if ($field['type'] == 'phone'){
+                        $field = array( "name" => $key, "value" => $value, "href" => "tel:" . $value );
+                    } else {
+                        $field = array( "name" => $key, "value" => $value );
+                    }
                     array_push( $ret['formulas'], $field );
                     break;
             }

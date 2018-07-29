@@ -53,12 +53,30 @@
       var field = YAHOO.util.Dom.get(element);
       if (field == null){
         var divele = $('#content div[field=' + element + ']');
+        switch (divele.attr("type")){
+          case "phone":
+            var fld = divele.find('a');
+            if (fld.size() == 1){
+              return fld[0];
+            }
+            break;
+          case "relate":
+            var fld = divele.find('a').find('span');
+            if (fld.size() == 1){
+              return fld[0];
+            }
+            break;
+        }
         if (divele.size() == 1){
           var node = document.createElement('span');
           node.setAttribute("id",element);
           node.setAttribute("class","sugar_field");
           divele[0].insertBefore(node,divele[0].childNodes[0]);
           return node;
+        }
+        divele = $('#content input[fieldid=' + element + ']');
+        if (divele.size() == 1){
+          return divele[0];
         }
       }
       return field;
@@ -233,7 +251,8 @@
     e.type = 'onInlineCancel';
     e.target.value = '';
     var el = _fah.getElement(field);
-    this.setFieldValue( el, value);
+    var avalue = {"value":value};
+    this.setFieldValue( el, avalue);
     this._FireTrigger( e );
   }
 
@@ -271,6 +290,10 @@
       return field.checked ? '1' : '0';
     }
     if (field.tagName == "SPAN") {
+      var ret = $(field).attr("data-id-value");
+      if (typeof(ret) != 'undefined'){
+        return ret;
+      }
       return document.all ? trim(field.innerText) : trim(field.textContent);
     } 
     if (field.value !== null && typeof(field.value) != "undefined") {
@@ -286,6 +309,10 @@
     if (field.tagName == "SELECT" && field.multiple){
       return field.id;
     }
+    var fieldid = field.getAttribute('fieldid')
+    if (fieldid != null) {
+      return fieldid;
+    }
     if (typeof(field.name) != 'undefined' && field.name != ""){
       return field.name;
     }
@@ -295,10 +322,14 @@
     return name;
   }
 
-  APO.forms.prototype.setFieldValue = function( field, value ){
+  APO.forms.prototype.setFieldValue = function( field, avalue ){
+    value = avalue['value'];
     if (field.tagName == "SPAN" || field.tagName == "A") {
       field.innerHTML = value;
       field.textContent = value;
+      if ( typeof(avalue['href']) != 'undefined' && field.tagName == "A" ){
+        field.href = avalue['href'];
+      }
       return;
     }
     if ( field.tagName == "SELECT" ){
@@ -341,6 +372,13 @@
     var k = 0;
     var l = 0;
     var m = 0;
+    if ( typeof(e.target) == 'undefined'){
+      var e = {};
+      e.target = {};
+      e.target.name = '';
+      e.type = 'onFormLoad';
+      e.target.value = '';
+    }
     for (var i = 0; i < this.formulas.length; i++) {
       if ( i>0 ){
         valor += ",";
@@ -421,7 +459,8 @@
     for (var j = 0; j < result['formulas'].length; j++) {
       for (var i = 0; i < this.fields[0].length; i++) {
         if (this.fields[0][i] == result['formulas'][j]['name'] ){
-          this.setFieldValue( this.fields[1][i], result['formulas'][j]['value']);
+          //this.setFieldValue( this.fields[1][i], result['formulas'][j]['value']);
+          this.setFieldValue( this.fields[1][i], result['formulas'][j]);
           if (this.view == "EditView" || this.name == "InlineEditView"){
             if (this.name == "InlineEditView"){
               this.FlashField( this.fields[1][i].parentElement );
