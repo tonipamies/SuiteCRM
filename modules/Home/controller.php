@@ -508,6 +508,9 @@ class HomeController extends SugarController{
         if (!isset($_REQUEST['fields'])){
             $_REQUEST['fields'] = array();
         }
+        if (!isset($_REQUEST['id'])){
+            $_REQUEST['id'] = "";
+        }
 
         $ret = array( "formulas" => array(), "visibility" => array(), "panelvisibility" => array(), "tabvisibility" => array());
 
