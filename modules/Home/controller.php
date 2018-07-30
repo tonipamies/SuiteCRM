@@ -513,17 +513,16 @@ class HomeController extends SugarController{
 
         if (!isset($_REQUEST['getbean']) || !isset($_REQUEST['inlinetd']) || !isset($_REQUEST['event']) || !isset($_REQUEST['current_module'])){
             echo json_encode( $ret );
-            return;
+            exit(0);
         }
 
-$GLOBALS['log']->fatal("APO::".print_r($_REQUEST,true));
         $getbean = ($_REQUEST['getbean'] == 'true' || $_REQUEST['inlinetd'] == 'true' );
         $nullfields = $this->isNecessaryLoadBean( $_REQUEST['fieldsdeps'], $_REQUEST['inlinetd'] == 'true' , $_REQUEST['event'] );
         if (!empty($nullfields)){
             $getbean = true;
         }
         $fields = $this->getModuleFormulas( $_REQUEST['current_module'], $_REQUEST['fields'], $_REQUEST['panels'], $_REQUEST['tabs'], $_REQUEST['id'], $getbean );
-        if ($fields['bean']['isset'] == 1 && isset($fields['bean']['fetchbean'])){
+        if (isset($fields['bean']['isset']) && $fields['bean']['isset'] == 1 && isset($fields['bean']['fetchbean'])){
             foreach( $nullfields as $nullfield ){
                 $_REQUEST['fieldsdeps'][$nullfield] = $fields['bean']['fetchbean']->$nullfield;
             }
@@ -533,7 +532,6 @@ $GLOBALS['log']->fatal("APO::".print_r($_REQUEST,true));
                 $_REQUEST['fieldsdeps'][$_REQUEST['event']['name']] = $_REQUEST['event']['value'];
             }
         }
-$GLOBALS['log']->fatal("APO2::".print_r($fields,true));
 
         foreach($fields['formula'] as $key => $field){
             switch($field['formula']['type']){
@@ -593,7 +591,6 @@ $GLOBALS['log']->fatal("APO2::".print_r($fields,true));
                     break;
             }
         }
-$GLOBALS['log']->fatal("APO3::".print_r($ret,true));
         echo json_encode( $ret );
     }
 

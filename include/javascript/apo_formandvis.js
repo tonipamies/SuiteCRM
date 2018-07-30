@@ -452,11 +452,11 @@
     try {
         var result = JSON.parse(result.responseText);
     } catch(e) {
-alert(result.responseText);
+alert("Error "+ e.message + "Result" + result.responseText);
         alert(SUGAR.language.translate('app_strings', 'LBL_LOADING_ERROR_INLINE_EDITING'));
         return false;
     }
-alert(result.responseText);
+
     for (var j = 0; j < result['formulas'].length; j++) {
       for (var i = 0; i < this.fields[0].length; i++) {
         if (this.fields[0][i] == result['formulas'][j]['name'] ){
