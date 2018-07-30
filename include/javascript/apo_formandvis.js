@@ -51,6 +51,34 @@
       }
     } else {
       var field = YAHOO.util.Dom.get(element);
+      if (field == null){
+        var divele = $('#content div[field=' + element + ']');
+        switch (divele.attr("type")){
+          case "phone":
+            var fld = divele.find('a');
+            if (fld.size() == 1){
+              return fld[0];
+            }
+            break;
+          case "relate":
+            var fld = divele.find('a').find('span');
+            if (fld.size() == 1){
+              return fld[0];
+            }
+            break;
+        }
+        if (divele.size() == 1){
+          var node = document.createElement('span');
+          node.setAttribute("id",element);
+          node.setAttribute("class","sugar_field");
+          divele[0].insertBefore(node,divele[0].childNodes[0]);
+          return node;
+        }
+        divele = $('#content input[fieldid=' + element + ']');
+        if (divele.size() == 1){
+          return divele[0];
+        }
+      }
       return field;
     }
   }
@@ -223,7 +251,8 @@
     e.type = 'onInlineCancel';
     e.target.value = '';
     var el = _fah.getElement(field);
-    this.setFieldValue( el, value);
+    var avalue = {"value":value};
+    this.setFieldValue( el, avalue);
     this._FireTrigger( e );
   }
 
@@ -255,12 +284,16 @@
       }
     }
     if (field.className && (field.className == "DateTimeCombo" || field.className == "Date")) {
-      return SUGAR.util.DateUtils.parse(field.value, "user");
+      return field.value;
     }
     if (field.tagName == "INPUT" && field.type.toUpperCase() == "CHECKBOX") {
       return field.checked ? '1' : '0';
     }
     if (field.tagName == "SPAN") {
+      var ret = $(field).attr("data-id-value");
+      if (typeof(ret) != 'undefined'){
+        return ret;
+      }
       return document.all ? trim(field.innerText) : trim(field.textContent);
     } 
     if (field.value !== null && typeof(field.value) != "undefined") {
@@ -276,6 +309,10 @@
     if (field.tagName == "SELECT" && field.multiple){
       return field.id;
     }
+    var fieldid = field.getAttribute('fieldid')
+    if (fieldid != null) {
+      return fieldid;
+    }
     if (typeof(field.name) != 'undefined' && field.name != ""){
       return field.name;
     }
@@ -285,10 +322,14 @@
     return name;
   }
 
-  APO.forms.prototype.setFieldValue = function( field, value ){
+  APO.forms.prototype.setFieldValue = function( field, avalue ){
+    value = avalue['value'];
     if (field.tagName == "SPAN" || field.tagName == "A") {
       field.innerHTML = value;
       field.textContent = value;
+      if ( typeof(avalue['href']) != 'undefined' && field.tagName == "A" ){
+        field.href = avalue['href'];
+      }
       return;
     }
     if ( field.tagName == "SELECT" ){
@@ -331,6 +372,13 @@
     var k = 0;
     var l = 0;
     var m = 0;
+    if ( typeof(e.target) == 'undefined'){
+      var e = {};
+      e.target = {};
+      e.target.name = '';
+      e.type = 'onFormLoad';
+      e.target.value = '';
+    }
     for (var i = 0; i < this.formulas.length; i++) {
       if ( i>0 ){
         valor += ",";
@@ -404,6 +452,7 @@
     try {
         var result = JSON.parse(result.responseText);
     } catch(e) {
+alert("Error "+ e.message + "Result" + result.responseText);
         alert(SUGAR.language.translate('app_strings', 'LBL_LOADING_ERROR_INLINE_EDITING'));
         return false;
     }
@@ -411,7 +460,7 @@
     for (var j = 0; j < result['formulas'].length; j++) {
       for (var i = 0; i < this.fields[0].length; i++) {
         if (this.fields[0][i] == result['formulas'][j]['name'] ){
-          this.setFieldValue( this.fields[1][i], result['formulas'][j]['value']);
+          this.setFieldValue( this.fields[1][i], result['formulas'][j]);
           if (this.view == "EditView" || this.name == "InlineEditView"){
             if (this.name == "InlineEditView"){
               this.FlashField( this.fields[1][i].parentElement );
@@ -441,9 +490,25 @@
         for (var i = 0; i < this.fields[0].length; i++) {
           if (this.fields[0][i] == result['panelvisibility'][j]['name'] ){
             if (result['panelvisibility'][j]['value']){
-              this.fields[1][i].hidden = false;
+              if ($(this.fields[1][i]).hasClass('lineSeparator')){
+                if (this.view=="EditView"){
+                  this.fields[1][i].parentNode.hidden = false;
+                } else {
+                  this.fields[1][i].parentNode.parentNode.hidden = false;
+                }
+              } else {
+                this.fields[1][i].hidden = false;
+              }
             } else {
-              this.fields[1][i].hidden = true;
+              if ($(this.fields[1][i]).hasClass('lineSeparator')){
+                if (this.view=="EditView"){
+                  this.fields[1][i].parentNode.hidden = true;
+                } else {
+                  this.fields[1][i].parentNode.parentNode.hidden = true;
+                }
+              } else {
+                this.fields[1][i].hidden = true;
+              }
             }
           }
         }
@@ -474,10 +539,12 @@
         case '-1':
           break;
         case 'getfocus':
-          $('#content ul.nav.nav-tabs > li[role=presentation]').eq(num).addClass('active');
-          $('#content ul.nav.nav-tabs > li[role=presentation]').eq(active).removeClass('active');
-          $('#content div.tab-content div.tab-pane-NOBOOTSTRAPTOGGLER').hide();
-          $('#content div.tab-content div.tab-pane-NOBOOTSTRAPTOGGLER').eq(num).show().addClass('active').addClass('in');
+          if (num != active){
+            $('#content ul.nav.nav-tabs > li[role=presentation]').eq(num).addClass('active');
+            $('#content ul.nav.nav-tabs > li[role=presentation]').eq(active).removeClass('active');
+            $('#content div.tab-content div.tab-pane-NOBOOTSTRAPTOGGLER').hide();
+            $('#content div.tab-content div.tab-pane-NOBOOTSTRAPTOGGLER').eq(num).show().addClass('active').addClass('in');
+          }  
           break;
       }
     } else {
@@ -555,17 +622,18 @@
       element.style.color = "";
       return;
     }
-    element.parentNode.parentElement.hidden = false;
+    var c = "edit-view-row-item";
+    if (this.view != "EditView"){
+      c = "detail-view-row-item";
+    }
+    var node = $(element).parents('.'+c);
+    node[0].hidden = false;
     var row = YAHOO.util.Dom.getAncestorByClassName(element,'row');
     if (row.hasChildNodes()){
-      var c = "edit-view-row-item";
-      if (this.view != "EditView"){
-        c = "detail-view-row-item";
-      }
       var hideelement = true;
       for (var i = 0; i < row.childNodes.length; i++) {
         if ( typeof(row.childNodes[i].tagName) != 'undefined' && row.childNodes[i].tagName == "DIV" && row.childNodes[i].classList.contains(c) ){
-          if (!row.childNodes[i].hidden){
+          if (!row.childNodes[i].hidden && row.childNodes[i].childElementCount>0){
             hideelement = false;
             break;
           }
@@ -603,17 +671,18 @@
       element.style.color = "transparent";
       return;
     }
-    element.parentNode.parentElement.hidden = true;
+    var c = "edit-view-row-item";
+    if (this.view != "EditView"){
+      c = "detail-view-row-item";
+    }
+    var node = $(element).parents('.'+c);
+    node[0].hidden = true;
     var row = YAHOO.util.Dom.getAncestorByClassName(element,'row');
     if (row.hasChildNodes()){
-      var c = "edit-view-row-item";
-      if (this.view != "EditView"){
-        c = "detail-view-row-item";
-      }
       var hideelement =  true;
       for (var i = 0; i < row.childNodes.length; i++) {
         if ( typeof(row.childNodes[i].tagName) != 'undefined' && row.childNodes[i].tagName == "DIV" && row.childNodes[i].classList.contains(c) ){
-          if (!row.childNodes[i].hidden){
+          if (!row.childNodes[i].hidden && row.childNodes[i].childElementCount>0){
             hideelement = false;
             break;
           }
@@ -621,11 +690,13 @@
       }
       if (hideelement){
         row.hidden = true;
-        if (row.parentNode.classList.contains("tab-content")){
-          row.parentNode.hidden = true;
-        }
-        if (row.parentNode.parentNode.parentNode.classList.contains("panel")){
-          row.parentNode.parentNode.parentNode.hidden = true;
+        if ($(row.parentNode).children().size() == $(row.parentNode).children('[hidden]').size()){
+          if (row.parentNode.classList.contains("tab-content")){
+            row.parentNode.hidden = true;
+          }
+          if (row.parentNode.parentNode.parentNode.classList.contains("panel")){
+            row.parentNode.parentNode.parentNode.hidden = true;
+          }
         }
       }
     }

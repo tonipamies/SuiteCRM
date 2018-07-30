@@ -1,6 +1,8 @@
     <!-- tab_panel_content.tpl -->
-    <div class="row edit-view-row">
+    {{counter name="separatorCount" start=0 print=false assign="separatorCount"}}
+
         {{foreach name=rowIteration from=$panel key=row item=rowData}}
+            <div class="row edit-view-row">
             {*row*}
             {{counter name="columnCount" start=0 print=false assign="columnCount"}}
             {{foreach name=colIteration from=$rowData key=col item=colData}}
@@ -132,6 +134,17 @@
                     {{/if}}
 
                         <!-- [/hide] -->
+                    {{else}}
+                        {{if (isset($subField.separator) && $subField.separator)}}
+                            <div id='tab-{{$tabId}}-separator-{{$separatorCount}}' class='lineSeparator'>
+                            {{if isset($subField.text)}}
+                                <hr style="margin-bottom:1px"><div><B><I>{{$subField.text|upper}}</I></B></div><hr style="background-color:grey;margin-top:1px">
+                            {{else}}
+                                <hr style="background-color:grey">
+                            {{/if}}
+                            </div>
+                            {{counter name="separatorCount" print=false}}
+                        {{/if}}
                     {{/if}}
 
                     {{counter name="fieldCount" print=false}}
@@ -145,5 +158,5 @@
             <div class="clear"></div>
             {{/if}}
             {{counter name="columnCount" print=false}}
+            </div>
         {{/foreach}}
-    </div>

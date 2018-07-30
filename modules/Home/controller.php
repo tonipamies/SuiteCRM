@@ -92,7 +92,7 @@ class HomeController extends SugarController{
             if($_REQUEST['id']){
                 $bean = BeanFactory::getBean($_REQUEST['current_module'],$_REQUEST['id']);
             } else {
-                $bean = new $_REQUEST['current_module'];
+                $bean = BeanFactory::getBean($_REQUEST['current_module']);
             }
             if (!$bean->has_duplicate_check){
                 $return_json["iserror"] = true;
@@ -456,10 +456,10 @@ class HomeController extends SugarController{
         if ($getbean == true && !empty( $id )){
             $focus = BeanFactory::getBean( $module, $id );
         } else {
-            $focus = new $beanList[$module];
+            $focus = BeanFactory::getBean( $module );
         }
         $fieldsret = 
-            array( 
+            array(
                 "formula" => array(), 
                 "visibility" => array(),
                 "panelvisibility" => array(),
@@ -508,13 +508,24 @@ class HomeController extends SugarController{
         if (!isset($_REQUEST['fields'])){
             $_REQUEST['fields'] = array();
         }
+        if (!isset($_REQUEST['id'])){
+            $_REQUEST['id'] = "";
+        }
+
+        $ret = array( "formulas" => array(), "visibility" => array(), "panelvisibility" => array(), "tabvisibility" => array());
+
+        if (!isset($_REQUEST['getbean']) || !isset($_REQUEST['inlinetd']) || !isset($_REQUEST['event']) || !isset($_REQUEST['current_module'])){
+            echo json_encode( $ret );
+            exit(0);
+        }
+
         $getbean = ($_REQUEST['getbean'] == 'true' || $_REQUEST['inlinetd'] == 'true' );
         $nullfields = $this->isNecessaryLoadBean( $_REQUEST['fieldsdeps'], $_REQUEST['inlinetd'] == 'true' , $_REQUEST['event'] );
         if (!empty($nullfields)){
             $getbean = true;
         }
         $fields = $this->getModuleFormulas( $_REQUEST['current_module'], $_REQUEST['fields'], $_REQUEST['panels'], $_REQUEST['tabs'], $_REQUEST['id'], $getbean );
-        if ($fields['bean']['isset'] == 1 && isset($fields['bean']['fetchbean'])){
+        if (isset($fields['bean']['isset']) && $fields['bean']['isset'] == 1 && isset($fields['bean']['fetchbean'])){
             foreach( $nullfields as $nullfield ){
                 $_REQUEST['fieldsdeps'][$nullfield] = $fields['bean']['fetchbean']->$nullfield;
             }
@@ -525,15 +536,17 @@ class HomeController extends SugarController{
             }
         }
 
-        $ret = array( "formulas" => array(), "visibility" => array(), "panelvisibility" => array(), "tabvisibility" => array());
-
         foreach($fields['formula'] as $key => $field){
             switch($field['formula']['type']){
                 case 'function':
                     require_once( $field['formula']['function']['include'] );
                     $value = $field['formula']['function']['name']( $fields["bean"], $_REQUEST );
                     $_REQUEST['fieldsdeps'][$key] = $value;
-                    $field = array( "name" => $key, "value" => $value );
+                    if ($field['type'] == 'phone'){
+                        $field = array( "name" => $key, "value" => $value, "href" => "tel:" . $value );
+                    } else {
+                        $field = array( "name" => $key, "value" => $value );
+                    }
                     array_push( $ret['formulas'], $field );
                     break;
             }
