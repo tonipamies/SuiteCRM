@@ -452,15 +452,14 @@
     try {
         var result = JSON.parse(result.responseText);
     } catch(e) {
+alert(result.responseText);
         alert(SUGAR.language.translate('app_strings', 'LBL_LOADING_ERROR_INLINE_EDITING'));
-        alert(e.message);
         return false;
     }
-
+alert(result.responseText);
     for (var j = 0; j < result['formulas'].length; j++) {
       for (var i = 0; i < this.fields[0].length; i++) {
         if (this.fields[0][i] == result['formulas'][j]['name'] ){
-          //this.setFieldValue( this.fields[1][i], result['formulas'][j]['value']);
           this.setFieldValue( this.fields[1][i], result['formulas'][j]);
           if (this.view == "EditView" || this.name == "InlineEditView"){
             if (this.name == "InlineEditView"){
@@ -623,13 +622,14 @@
       element.style.color = "";
       return;
     }
-    element.parentNode.parentElement.hidden = false;
+    var c = "edit-view-row-item";
+    if (this.view != "EditView"){
+      c = "detail-view-row-item";
+    }
+    var node = $(element).parents('.'+c);
+    node[0].hidden = false;
     var row = YAHOO.util.Dom.getAncestorByClassName(element,'row');
     if (row.hasChildNodes()){
-      var c = "edit-view-row-item";
-      if (this.view != "EditView"){
-        c = "detail-view-row-item";
-      }
       var hideelement = true;
       for (var i = 0; i < row.childNodes.length; i++) {
         if ( typeof(row.childNodes[i].tagName) != 'undefined' && row.childNodes[i].tagName == "DIV" && row.childNodes[i].classList.contains(c) ){
@@ -671,13 +671,14 @@
       element.style.color = "transparent";
       return;
     }
-    element.parentNode.parentElement.hidden = true;
+    var c = "edit-view-row-item";
+    if (this.view != "EditView"){
+      c = "detail-view-row-item";
+    }
+    var node = $(element).parents('.'+c);
+    node[0].hidden = true;
     var row = YAHOO.util.Dom.getAncestorByClassName(element,'row');
     if (row.hasChildNodes()){
-      var c = "edit-view-row-item";
-      if (this.view != "EditView"){
-        c = "detail-view-row-item";
-      }
       var hideelement =  true;
       for (var i = 0; i < row.childNodes.length; i++) {
         if ( typeof(row.childNodes[i].tagName) != 'undefined' && row.childNodes[i].tagName == "DIV" && row.childNodes[i].classList.contains(c) ){
