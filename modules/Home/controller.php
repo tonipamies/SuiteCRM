@@ -533,7 +533,7 @@ $GLOBALS['log']->fatal("APO::".print_r($_REQUEST,true));
                 $_REQUEST['fieldsdeps'][$_REQUEST['event']['name']] = $_REQUEST['event']['value'];
             }
         }
-$GLOBALS['log']->fatal("APO2::".print_r($_REQUEST,true));
+$GLOBALS['log']->fatal("APO2::".print_r($fields,true));
 
         foreach($fields['formula'] as $key => $field){
             switch($field['formula']['type']){
@@ -593,6 +593,7 @@ $GLOBALS['log']->fatal("APO2::".print_r($_REQUEST,true));
                     break;
             }
         }
+$GLOBALS['log']->fatal("APO3::".print_r($ret,true));
         echo json_encode( $ret );
     }
 
