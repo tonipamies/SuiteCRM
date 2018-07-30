@@ -192,14 +192,14 @@ class TemplateHandler
             }
             $defs = $dictionary[$mod]['fields'];
             //Create a base class with field_name_map property
-            $sugarBean = new SugarBean();
+            $sugarBean = BeanFactory::getBean($module); // $sugarBean = new SugarBean();
             $sugarBean->field_name_map = $defs;
             $sugarBean->module_dir = $module;
 
             if (!empty($dictionary[$mod]['visibility'])) {
                 $sugarBean->visibility = $dictionary[$mod]['visibility'];
             }
-            if (!empty($dictionary[$module]['formandvis'])) {
+            if (!empty($dictionary[$mod]['formandvis'])) {
                 $sugarBean->formandvis = $dictionary[$mod]['formandvis'];
             }
             $skipFiles = array();
@@ -290,7 +290,7 @@ class TemplateHandler
             if (!empty($dictionary[$mod]['visibility'])) {
                 $sugarBean->visibility = $dictionary[$mod]['visibility'];
             }
-            if (!empty($dictionary[$module]['formandvis'])) {
+            if (!empty($dictionary[$mod]['formandvis'])) {
                 $sugarBean->formandvis = $dictionary[$mod]['formandvis'];
             }
 

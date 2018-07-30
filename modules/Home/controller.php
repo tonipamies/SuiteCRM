@@ -456,7 +456,7 @@ class HomeController extends SugarController{
         if ($getbean == true && !empty( $id )){
             $focus = BeanFactory::getBean( $module, $id );
         } else {
-            $focus = new $beanList[$module];
+            $focus = BeanFactory::getBean( $module );
         }
         $fieldsret = 
             array(
@@ -533,7 +533,7 @@ $GLOBALS['log']->fatal("APO::".print_r($_REQUEST,true));
                 $_REQUEST['fieldsdeps'][$_REQUEST['event']['name']] = $_REQUEST['event']['value'];
             }
         }
-
+$GLOBALS['log']->fatal("APO2::".print_r($_REQUEST,true));
 
         foreach($fields['formula'] as $key => $field){
             switch($field['formula']['type']){
